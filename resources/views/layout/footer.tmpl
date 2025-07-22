@@ -1,0 +1,199 @@
+{{define "layout/footer.tmpl"}}
+            
+            </div>
+        </div>
+        <!-- End::app-content -->
+
+        <!-- Footer Start -->
+        <footer class="footer mt-auto py-3 bg-white text-center">
+            <div class="container">
+                <span class="text-muted"> Copyright © <span id="year"></span> <a
+                        href="javascript:void(0);" class="text-dark fw-semibold">Abdur Rozaq</a>.
+                    Designed with <span class="bx bxs-hot text-danger"></span> by <a href="javascript:void(0);">
+                        <span class="fw-semibold text-primary text-decoration-underline">`Shaka</span>
+                    </a>
+                </span>
+            </div>
+        </footer>
+        <!-- Footer End -->
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+
+    <!-- Scroll To Top -->
+    <div class="scrollToTop">
+        <span class="arrow"><i class="ri-arrow-up-s-fill fs-20"></i></span>
+    </div>
+    <div id="responsive-overlay"></div>
+    <!-- Scroll To Top -->
+
+    <!-- Popper JS -->
+    <script src="assets/shaka/libs/@popperjs/core/umd/popper.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="assets/shaka/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- Defaultmenu JS -->
+    <script src="assets/shaka/js/defaultmenu.min.js"></script>
+
+    <!-- Node Waves JS-->
+    <script src="assets/shaka/libs/node-waves/waves.min.js"></script>
+
+    <!-- Sticky JS -->
+    <script src="assets/shaka/js/sticky.js"></script>
+
+    <!-- Simplebar JS -->
+    <script src="assets/shaka/libs/simplebar/simplebar.min.js"></script>
+    <script src="assets/shaka/js/simplebar.js"></script>
+
+    <!-- Color Picker JS -->
+    <script src="assets/shaka/libs/@simonwep/pickr/pickr.es5.min.js"></script>
+
+    <!-- Datatables Cdn -->
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
+
+
+    <!-- Select2 Cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Apex Charts JS -->
+    <script src="assets/shaka/libs/apexcharts/apexcharts.min.js"></script>
+
+    <script src="assets/shaka/libs/sweetalert2/sweetalert2.min.js"></script>
+
+    <script src="assets/shaka/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="assets/shaka/libs/flatpickr/id.js"></script>
+
+    <!-- Custom-Switcher JS -->
+    <script src="assets/shaka/js/custom-switcher.min.js"></script>
+
+    <!-- Custom JS -->
+    <script src="assets/shaka/js/custom.js"></script>
+
+    <script>
+
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('clock').textContent = timeString;
+        }
+
+        // Initial call to update time immediately
+        updateTime();
+
+        // Update time every second (1000 milliseconds)
+        setInterval(updateTime, 1000);
+
+        $(function(e){
+
+            $(".select2").select2({
+                placeholder: "Pilih",
+                allowClear: true
+            });
+
+            $('.select2-tambah').select2({
+                placeholder: "Pilih",
+                allowClear: true,
+                language: "id",
+                dropdownParent: $('#formSimpan')
+            });
+
+            $('.select2-ubah').select2({
+                language: "id",
+                dropdownParent: $('#formUpdate')
+            });
+
+            $('.select2-detail').select2({
+                language: "id",
+                dropdownParent: $('#modalDetail')
+            });
+
+            flatpickr($('.datepick'),{
+                dateFormat : 'd-m-Y',
+                locale: 'id',
+                allowInput : true
+            });
+
+        });
+
+
+        $(document).on('select2:open', () => {
+            setTimeout(() => {
+                const searchField = document.querySelector('.select2-container--open .select2-search__field');
+                if (searchField) searchField.focus();
+            }, 0); // Delay 0–10ms agar DOM sempat render
+        });
+
+        function reset_notify(){
+            $('.colored-toast').removeClass('bg-primary-transparent bg-info-transparent bg-success-transparent bg-danger-transparent');
+            $('.toast-header').removeClass('bg-primary bg-info bg-success bg-danger');
+        }
+
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;")
+                .replace(/`/g, "&#096;");
+        }
+
+
+        function notify(type,title,body){
+            const topcentertoastExample = document.getElementById('notification-toast')
+            const toast = new bootstrap.Toast(topcentertoastExample)
+            $('#titleToast').html(title);
+            $('#bodyToast').html(body);
+
+            reset_notify();
+            const toastClassMap = {
+                success: 'bg-success',
+                info: 'bg-info',
+                danger: 'bg-danger',
+                primary: 'bg-primary'
+            };
+
+            if (toastClassMap[type]) {
+                $('.toast-header').addClass(toastClassMap[type]);
+            }
+
+            toast.show()
+        }
+
+        function loadingSimpan(status){
+            if (status) {
+                $('#btnSimpan').empty();
+                $('#btnSimpan').html('<i class="bx bx-loader-circle bx-spin"></i> Sedang Menyimpan...');
+                $('#btnSimpan').attr('disabled', true);
+            }else{
+                $('#btnSimpan').empty()
+                $('#btnSimpan').html('<i class="bx bx-save"></i> Simpan')
+                $('#btnSimpan').attr('disabled', false)
+            }
+        }
+
+        function loadingUpdate(status){
+            if (status) {
+                $('#btnUpdate').empty();
+                $('#btnUpdate').html('<i class="bx bx-loader-circle bx-spin"></i> Sedang Memperbarui...');
+                $('#btnUpdate').attr('disabled', true);
+            }else{
+                $('#btnUpdate').empty()
+                $('#btnUpdate').html('<i class="bx bx-recycle"></i> Perbarui')
+                $('#btnUpdate').attr('disabled', false)
+            }
+        }
+    </script>
+
+{{end}}

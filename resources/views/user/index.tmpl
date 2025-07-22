@@ -1,0 +1,341 @@
+{{define "user/index.tmpl"}}
+    {{ template "layout/header.tmpl" . }}
+    <!-- Page Header -->
+    <div class="card custom-card mt-2">
+        <div class="card-body">
+            <div class="d-md-flex d-block align-items-center justify-content-between page-header-breadcrumb">
+                <h1 class="page-title fw-semibold fs-16 mb-0 font-magnolia">
+                    <i class="bx bxs-user-account"></i> Manajemen User
+                </h1>
+                <div class="ms-md-1 ms-0">
+                    <nav>
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">User</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header Close -->
+
+    <div class="modal fade" id="modalUbah">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content modal-content-demo">
+                <div class="modal-header">
+                    <h6 class="modal-title font-magnolia"><i class='bx bxs-edit'></i> Ubah Data</h6>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-start">
+                    <form id="formUpdate" method="post">
+                        <input type="hidden" name="_token" value="{{.csrf_token}}">
+                        <input type="hidden" name="id" id="id_user">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group mt-2">
+                                    <label for="name" class="form-label">Nama</label>
+                                    <input class="form-control" type="text" id="nama_lengkap" name="nama_lengkap">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mt-2">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input class="form-control" type="email" id="email" name="email">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mt-2">
+                                    <label for="nama_opd" class="form-label">Role</label>
+                                    <select class="form-control select2-ubah" name="role" id="role">
+                                        <option value="admin">Admin</option>
+                                        <option value="staf">Staf</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mt-2">
+                                    <label for="password" class="form-label">Password Baru</label>
+                                    <input class="form-control" type="password" id="password" name="password" placeholder="Password Baru">
+                                    <small class="text-danger">Jika tidak ingin mengganti password, kosongkan kolom ini.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mt-2">
+                                    <label for="password" class="form-label">Konfirmasi Password Baru</label>
+                                    <input class="form-control" type="password" name="password_confirmation" placeholder="Konfirmasi Password Baru">
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="btnUpdate" class="btn btn-primary"><i class='bx bx-recycle'></i> Perbarui</button>
+                </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start::row-1 -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card custom-card">
+                <div class="card-header">
+                    <div class="card-title font-magnolia">
+                        <i class='bx bxs-plus-square'></i> Form Tambah Data User
+                    </div>
+                </div>
+                <div class="card-body pt-0">
+                    <form id="formSimpan" method="post" autocomplete="off">
+                        <input type="hidden" name="_token" value="{{.csrf_token}}">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group mt-2">
+                                    <label for="name" class="form-label">Nama</label>
+                                    <input class="form-control" type="text" name="nama_lengkap" placeholder="Nama Lengkap">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mt-2">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input class="form-control" type="email" name="email" placeholder="Email" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mt-2">
+                                    <label for="role" class="form-label">Role</label>
+                                    <select class="form-control select2" name="role" id="frole">
+                                        <option value="" selected disabled>Pilih Role</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="staf">Staf</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mt-2">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input class="form-control" type="password" name="password" placeholder="Password">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mt-2">
+                                    <label for="password" class="form-label">Konfirmasi Password</label>
+                                    <input class="form-control" type="password" name="password_confirmation" placeholder="Password">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group mt-2">
+                                    <label class="form-label text-white d-none d-md-block">..</label>
+                                    <div class="d-grid gap-2">
+                                        <button id="btnSimpan" type="submit" class="btn btn-success waves-effect waves-light"><i class='bx bx-save'></i> Simpan</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="card custom-card">
+                <div class="card-header">
+                    <div class="card-title font-magnolia">
+                        <i class="bx bxs-user-account"></i> Data Manajemen User
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="tableData" class="table table-bordered text-nowrap" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End::row-1 -->
+    {{ template "layout/footer.tmpl" . }}
+
+    <script>
+        var table;
+        $(function(){
+            table = $('#tableData').DataTable({
+                processing: true,
+                pageLength: 7,
+                ordering: false,
+                responsive: true,
+                lengthMenu: [[7, 10, 25, 50, -1], [7, 10, 25, 50, "All"]],
+                drawCallback: function( settings ) {
+                    $("[data-toggle=tooltip").tooltip();
+                },
+                order: [],
+                serverSide: true,
+                ajax: {
+                    url: '/user'
+                },
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false },
+                    {
+                        data: 'nama_lengkap',
+                        name: 'nama_lengkap'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'role',
+                        name: 'role'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action'
+                    }
+                ]
+            });
+
+        });
+
+        $('#btnSimpan').click(function(e){
+            e.preventDefault();
+            loadingSimpan(true);
+
+            var data = new FormData(document.getElementById("formSimpan"));
+            axios.post('/user',data)
+            .then(function (response) {
+                var data = response.data;
+                loadingSimpan(false);
+
+                if (data.status) {
+                    notify('success','Berhasil!',data.message);
+                    $('#formSimpan').trigger('reset');
+                    $('#frole').val(null).change();
+                    $('input').blur();
+                    table.draw();
+                }else{
+                    Swal.fire(
+                        {
+                            title: "Peringatan",
+                            html: data.message,
+                            icon: 'warning',
+                            confirmButtonColor: '#5156be'
+                        }
+                    )
+                }
+            })
+            .catch(function (error) {
+                loadingSimpan(false);
+                notify('danger','Gagal!',error);
+            });
+
+        });
+
+        $('#btnUpdate').click(function(e){
+            e.preventDefault();
+            loadingUpdate(true);
+
+            var data = new FormData(document.getElementById("formUpdate"));
+            axios.put('user/'+$('#id_user').val(),data)
+            .then(function (response) {
+                var data = response.data;
+                loadingUpdate(false);
+
+                if (data.status) {
+                    notify('info','Berhasil!', data.message);
+                    $('#modalUbah').modal('toggle');
+                    $('#formUpdate').trigger('reset');
+                    $('input').blur();
+                    table.draw();
+                }else{
+                    Swal.fire(
+                        {
+                            title: "Peringatan",
+                            html: data.message,
+                            icon: 'warning',
+                            confirmButtonColor: '#5156be'
+                        }
+                    )
+                }
+            })
+            .catch(function (error) {
+                loadingUpdate(false);
+                notify('danger','Gagal!',error);
+            });
+
+        });
+
+        function hapus(id){
+            Swal.fire({
+                title: "Apakah anda yakin ?",
+                text: "Data yang sudah dihapus tidak dapat dikembalikan!",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#2ab57d",
+                cancelButtonColor: "#fd625e",
+                confirmButtonText: "Ya, saya yakin!"
+            }).then(function (result) {
+                if (result.value) {
+                    // masukkan proses delete disini
+                    axios.delete(`/user/${id}`,{
+                        headers: {
+                            'X-CSRF-TOKEN': '{{.csrf_token}}'
+                        }
+                    })
+                    .then(function (response) {
+                        var data = response.data;
+
+                        if (data.status) {
+                            Swal.fire("Terhapus!", "Data anda berhasil dihapus!.", "success");
+                            table.draw();
+                        }else{
+                            Swal.fire(
+                                {
+                                    title: "Peringatan",
+                                    html: data.message,
+                                    icon: 'warning',
+                                    confirmButtonColor: '#5156be'
+                                }
+                            )
+                        }
+                    })
+                    .catch(function (error) {
+                        notify('danger','Gagal!',error);
+                    });
+                }
+            });
+        }
+
+        function ubah(id){
+            axios.get(`/user/${id}`)
+            .then(function (response) {
+                var data = response.data;
+                var res = data.data;
+                console.log(res);
+                $('#modalUbah').modal('toggle');
+                $('#id_user').val(res.id);
+                $('#role').val(res.Role).change();
+                $('#email').val(res.Email);
+                $('#nama_lengkap').val(res.NamaLengkap);
+            })
+            .catch(function (error) {
+                notify('danger','Gagal!',error);
+            });
+
+        }
+
+
+   </script>
+    
+</body>
+
+</html>
+{{end}}

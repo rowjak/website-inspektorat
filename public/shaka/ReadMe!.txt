@@ -1,0 +1,1 @@
+https://www.spruko.com/demo/nixlot/dist/html/icons.html
