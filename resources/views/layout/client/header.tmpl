@@ -22,8 +22,27 @@
         <link rel="stylesheet" href="assets/zhen/css/style.css">
         <link rel="stylesheet" href="assets/zhen/css/responsive.css">
 
+        <link rel="stylesheet" href="assets/zhen/libs/glide/glide.core.min.css">
+
         <style>
-        
+            .glide__slide {
+                border: 1px solid white;
+                line-height: 100px;
+                margin: 0;
+                text-align: center;
+                position: relative;
+            }
+
+            .glide__slide .th-btn {
+                position: absolute;
+                bottom: 30px;
+                left: 40px;
+            }
+            .glide__slide .btn {
+                position: absolute;
+                bottom: 15px;
+                left: 20px;
+            }
         </style>
     </head>
     <body>
@@ -63,22 +82,18 @@
                         <div class="col-md-6">
                             <div class="header-top-menu">
                                 <ul class="list-wrap">
-                                    <li><a href="javascript:;">{{ call .h.today }}</a></li>
-                                    <li><a href="about.html">About</a></li>
-                                    <li><a href="contact.html">Faq’s</a></li>
-                                    <li><a href="blog.html">All Recipes</a></li>
+                                    <li><a href="about.html"><i class="fa fa-phone me-1"></i> (0285) 3830858</a></li>
+                                    <li><a href="about.html"><i class="fa fa-envelope me-1"></i> inspektorat@pekalongankab.go.id</a></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="header-top-social">
-                                <h5 class="title">Follow Us:</h5>
-                                <ul class="list-wrap">
-                                    <li><a href="javascript:void(0)"><i class="fab fa-facebook-f"></i></a></li>
-                                    <li><a href="javascript:void(0)"><i class="fab fa-twitter"></i></a></li>
-                                    <li><a href="javascript:void(0)"><i class="fab fa-instagram"></i></a></li>
-                                    <li><a href="javascript:void(0)"><i class="fab fa-linkedin-in"></i></a></li>
-                                </ul>
+                                <h5 class="title">
+                                    <i class="fa fa-calendar me-1"></i>
+                                    {{ call .h.today }},
+                                    <span id="clock"></span> WIB
+                                </h5>
                             </div>
                         </div>
                     </div>
@@ -130,17 +145,17 @@
                                     </div>
                                     <div class="col-xl-2 col-lg-3 col-md-4">
                                         <div class="logo text-center">
-                                            <a href="index.html"><img src="assets/zhen/img/logo/logo.png" alt="Logo"></a>
+                                            <a href="index.html"><img src="assets/inspektorat.webp" alt="Logo"></a>
                                         </div>
                                         <div class="logo d-none text-center">
-                                            <a href="index.html"><img src="assets/zhen/img/logo/w_logo.png" alt="Logo"></a>
+                                            <a href="index.html"><img src="assets/inspektorat_w.webp" alt="Logo"></a>
                                         </div>
                                     </div>
                                     <div class="col-xl-5 col-lg-9 col-md-8">
                                         <div class="header-right-side">
                                             <div class="header-search-wrap">
                                                 <form action="#">
-                                                    <input type="text" placeholder="Search here . . .">
+                                                    <input type="text" placeholder="Cari Disini . . .">
                                                     <button type="submit"><i class="flaticon-search"></i></button>
                                                 </form>
                                             </div>
@@ -243,174 +258,39 @@
         <main class="fix">
 
             <section class="newsletter-area">
-                <div class="container">
+                <div class="container-gluid">
                     <div class="col-12">
-                        
-                    </div>
-                </div>
-            </section>
-
-            <!-- newsletter-area -->
-            <section class="newsletter-area">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="newsletter-wrap">
-                                <div class="newsletter-content">
-                                    <h2 class="title">Want to Get New Food New Daily?</h2>
-                                </div>
-                                <div class="newsletter-form">
-                                    <form action="#">
-                                        <div class="form-grp">
-                                            <input type="text" placeholder="Name">
-                                        </div>
-                                        <div class="form-grp">
-                                            <input type="email" placeholder="E-mail">
-                                        </div>
-                                        <button type="submit" class="btn">Submit Now</button>
-                                    </form>
-                                </div>
-                                <div class="newsletter-shape-wrap">
-                                    <img src="assets/zhen/img/images/newsletter_shape01.png" alt="">
-                                    <img src="assets/zhen/img/images/newsletter_shape02.png" alt="">
-                                </div>
+                        <div class="glide heropeek d-none d-lg-block">
+                            <div class="glide__track" data-glide-el="track">
+                                <ul class="glide__slides">
+                                    {{range $index, $item := .Carousel}}
+                                        <li class="glide__slide">
+                                            <img class="img-fluid" src="assets/test-carousel.jpg" >
+                                            {{/* @if ($item->url_onclick == 'Ya')
+                                                <a href="{{ $item->url }}" target="_blank" class="th-btn px-1 py-3">{{ $item->button }}</a>
+                                            @endif */}}
+                                        </li>
+                                    {{end}}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="glide heropeekm d-block d-lg-none mt-lg-0 mt-20">
+                            <div class="glide__track" data-glide-el="track">
+                                <ul class="glide__slides">
+                                    {{range $index, $item := .Carousel}}
+                                        <li class="glide__slide">
+                                            <img class="img-fluid" src="assets/test-carousel.jpg" >
+                                            {{/* @if ($item->url_onclick == 'Ya')
+                                                <a href="{{ $item->url }}" target="_blank" class="th-btn px-1 py-3">{{ $item->button }}</a>
+                                            @endif */}}
+                                        </li>
+                                    {{end}}
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            <!-- newsletter-area-end -->
-
-            <!-- latest-post-area -->
-            <section class="latest-post-area pt-60 pb-60">
-                <div class="container">
-                    <div class="latest-post-inner-wrap">
-                        <div class="row">
-                            <div class="col-70">
-                                <div class="section-title-wrap mb-30">
-                                    <div class="section-title">
-                                        <h2 class="title">Explore Latest Recipes</h2>
-                                    </div>
-                                    <div class="view-all-btn">
-                                        <a href="blog.html" class="link-btn">View All
-                                            <span class="svg-icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" fill="none">
-                                                    <path d="M1.07692 10L0 8.92308L7.38462 1.53846H0.769231V0H10V9.23077H8.46154V2.61538L1.07692 10Z" fill="currentColor" />
-                                                    <path d="M1.07692 10L0 8.92308L7.38462 1.53846H0.769231V0H10V9.23077H8.46154V2.61538L1.07692 10Z" fill="currentColor" />
-                                                </svg>
-                                            </span>
-                                        </a>
-                                    </div>
-                                    <div class="section-title-line"></div>
-                                </div>
-                                <div class="latest-post-item-wrap">
-                                    <div class="row">
-                                        <div class="col-66">
-                                            <div class="featured-post-item latest-post-item big-post">
-                                                <div class="featured-post-thumb">
-                                                    <a href="blog-details.html"><img src="assets/zhen/img/blog/latest_post01.jpg" alt=""></a>
-                                                </div>
-                                                <div class="featured-post-content">
-                                                    <a href="blog.html" class="post-tag">Appetizer</a>
-                                                    <h2 class="post-title bold-underline"><a href="blog-details.html">Favorite Browned Butter Chocolate <br> Cookies Daily Breakfast</a></h2>
-                                                    <div class="blog-post-meta">
-                                                        <ul class="list-wrap">
-                                                            <li><i class="flaticon-user"></i>by<a href="author.html">Admin</a></li>
-                                                            <li><i class="flaticon-calendar"></i>27 August, 2024</li>
-                                                            <li><i class="flaticon-history"></i>20 Mins</li>
-                                                        </ul>
-                                                    </div>
-                                                    <p>Browned butter and brown sugar caramelly goodness, crispy edges thick and soft centers and melty little puddles of chocolate My first favorite thing about these browned butter.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-34">
-                                            <div class="latest-post-wrap">
-                                                <div class="featured-post-item latest-post-item small-post">
-                                                    <div class="featured-post-thumb">
-                                                        <a href="blog-details.html"><img src="assets/zhen/img/blog/latest_post02.jpg" alt=""></a>
-                                                    </div>
-                                                    <div class="featured-post-content">
-                                                        <a href="blog.html" class="post-tag">Breakfast</a>
-                                                        <h2 class="post-title"><a href="blog-details.html">The Potentially Dangerous Non-Accessibility Of Cookie</a>
-                                                        </h2>
-                                                        <div class="blog-post-meta">
-                                                            <ul class="list-wrap">
-                                                                <li><i class="flaticon-user"></i>by<a href="author.html">Admin</a></li>
-                                                                <li><i class="flaticon-calendar"></i>27 August, 2024</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="featured-post-item latest-post-item small-post">
-                                                    <div class="featured-post-thumb">
-                                                        <a href="blog-details.html"><img src="assets/zhen/img/blog/latest_post03.jpg" alt=""></a>
-                                                    </div>
-                                                    <div class="featured-post-content">
-                                                        <a href="blog.html" class="post-tag">Lunch</a>
-                                                        <h2 class="post-title"><a href="blog-details.html">One-pan baked sausage
-                                                                and lentils</a></h2>
-                                                        <div class="blog-post-meta">
-                                                            <ul class="list-wrap">
-                                                                <li><i class="flaticon-user"></i>by<a href="author.html">Admin</a></li>
-                                                                <li><i class="flaticon-calendar"></i>27 August, 2024</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-30">
-                                <div class="sidebar-wrap">
-                                    <div class="sidebar-widget">
-                                        <div class="sidebar-avatar">
-                                            <div class="sidebar-avatar-thumb">
-                                                <img src="assets/zhen/img/images/avatar_img.png" alt="">
-                                            </div>
-                                            <div class="sidebar-avatar-content">
-                                                <h2 class="title">Hi, I’m Jenny!</h2>
-                                                <p>when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-                                                <div class="avatar-social">
-                                                    <ul class="list-wrap">
-                                                        <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                                        <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                                                        <li><a href="#"><i class="fab fa-youtube"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="sidebar-avatar-shape">
-                                                <img src="assets/zhen/img/images/avatar_shape01.png" alt="">
-                                                <img src="assets/zhen/img/images/avatar_shape02.png" alt="">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="sidebar-widget">
-                                        <div class="widget-title mb-25">
-                                            <h2 class="title">Subscribe & Followers</h2>
-                                            <div class="section-title-line"></div>
-                                        </div>
-                                        <div class="sidebar-social-wrap">
-                                            <ul class="list-wrap">
-                                                <li><a href="#"><i class="fab fa-facebook-f"></i>facebook</a></li>
-                                                <li><a href="#"><i class="fab fa-twitter"></i>twitter</a></li>
-                                                <li><a href="#"><i class="fab fa-instagram"></i>instagram</a></li>
-                                                <li><a href="#"><i class="fab fa-youtube"></i>youtube</a></li>
-                                                <li><a href="#"><i class="fab fa-linkedin-in"></i>LinkedIn</a></li>
-                                                <li><a href="#"><i class="fab fa-pinterest-p"></i>Pinterest</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- latest-post-area-end -->
 
             <!-- categories-area -->
             <section class="categories-area">
@@ -425,66 +305,7 @@
                     </div>
                     <div class="categories-item-wrap">
                         <div class="row justify-content-center">
-                            <div class="col-xl-2 col-lg-3 col-md-4 col-6">
-                                <div class="categories-item">
-                                    <div class="categories-img">
-                                        <a href="blog.html"><img src="assets/zhen/img/images/categories_img01.png" alt=""></a>
-                                    </div>
-                                    <div class="categories-content">
-                                        <a href="blog.html">Breakfast</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-2 col-lg-3 col-md-4 col-6">
-                                <div class="categories-item">
-                                    <div class="categories-img">
-                                        <a href="blog.html"><img src="assets/zhen/img/images/categories_img02.png" alt=""></a>
-                                    </div>
-                                    <div class="categories-content">
-                                        <a href="blog.html">Dessert</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-2 col-lg-3 col-md-4 col-6">
-                                <div class="categories-item">
-                                    <div class="categories-img">
-                                        <a href="blog.html"><img src="assets/zhen/img/images/categories_img03.png" alt=""></a>
-                                    </div>
-                                    <div class="categories-content">
-                                        <a href="blog.html">Lunch</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-2 col-lg-3 col-md-4 col-6">
-                                <div class="categories-item">
-                                    <div class="categories-img">
-                                        <a href="blog.html"><img src="assets/zhen/img/images/categories_img04.png" alt=""></a>
-                                    </div>
-                                    <div class="categories-content">
-                                        <a href="blog.html">Appetizer</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-2 col-lg-3 col-md-4 col-6">
-                                <div class="categories-item">
-                                    <div class="categories-img">
-                                        <a href="blog.html"><img src="assets/zhen/img/images/categories_img05.png" alt=""></a>
-                                    </div>
-                                    <div class="categories-content">
-                                        <a href="blog.html">Dinner</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-2 col-lg-3 col-md-4 col-6">
-                                <div class="categories-item">
-                                    <div class="categories-img">
-                                        <a href="blog.html"><img src="assets/zhen/img/images/categories_img06.png" alt=""></a>
-                                    </div>
-                                    <div class="categories-content">
-                                        <a href="blog.html">Pizza</a>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -588,18 +409,6 @@
                 </div>
             </section>
             <!-- recipe-area-end -->
-
-            <!-- ad-banner-area -->
-            <div class="ad-banner-area">
-                <div class="container">
-                    <div class="ad-banner-img">
-                        <a href="#">
-                            <img src="assets/zhen/img/images/advertisement01.jpg" alt="">
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- ad-banner-area-end -->
 
             <!-- healthy-area -->
             <section class="healthy-area pt-60 pb-30">
@@ -837,7 +646,7 @@
                             <div class="col-lg-3 col-md-7">
                                 <div class="footer-widget">
                                     <div class="fw-logo">
-                                        <a href="index.html"><img src="assets/zhen/img/logo/w_logo.png" alt=""></a>
+                                        <a href="index.html"><img src="assets/inspektorat_w.webp" alt=""></a>
                                     </div>
                                     <div class="footer-content">
                                         <p>Browned butter and brown sugar caramelly goodness, crispy edges thick and soft centers and melty little puddles of chocolate.</p>
@@ -937,6 +746,59 @@
         <script src="assets/zhen/js/ajax-form.js"></script>
         <script src="assets/zhen/js/wow.min.js"></script>
         <script src="assets/zhen/js/main.js"></script>
+
+        <script src="assets/zhen/libs/glide/glide.min.js"></script>
+
+        <script>
+            function updateTime() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+
+                const timeString = `${hours}:${minutes}:${seconds}`;
+                document.getElementById('clock').textContent = timeString;
+            }
+
+            // Initial call to update time immediately
+            updateTime();
+
+            // Update time every second (1000 milliseconds)
+            setInterval(updateTime, 1000);
+        </script>
+
+        <script>
+            var glideHeroPeek = new Glide('.heropeek', {
+                type: 'carousel',
+                animationDuration: 1000,
+                autoplay: 3000,
+                focusAt: '1',
+                startAt: 1,
+                perView: 1,
+                // set a value to show the previous and next slides peeking in
+                peek: {
+                    before: 200,
+                    after: 200
+                },
+                gap: 0
+            });
+
+            var glideHeroPeekM = new Glide('.heropeekm', {
+                type: 'carousel',
+                animationDuration: 1000,
+                autoplay: 3000,
+                focusAt: '1',
+                startAt: 1,
+                perView: 1,
+                // set a value to show the previous and next slides peeking in
+                gap: 0
+            });
+
+            $(function(){
+                glideHeroPeek.mount();
+                glideHeroPeekM.mount();
+            })
+        </script>
 
         
     </body>

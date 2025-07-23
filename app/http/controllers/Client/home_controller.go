@@ -1,7 +1,10 @@
 package controllers
 
 import (
+	"rowjak/website-inspektorat/app/models"
+
 	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/facades"
 )
 
 type HomeController struct {
@@ -15,7 +18,21 @@ func NewHomeController() *HomeController {
 }
 
 func (r *HomeController) Index(ctx http.Context) http.Response {
-	return ctx.Response().Success().Json(http.Json{
-		"message": "Ini adalah HomeController di dalam folder Client",
+	var carousels []models.Carousel
+	err := facades.Orm().Query().
+		Select("keterangan", "image_sm", "image_lg", "link").
+		Where("status", "Ditampilkan").
+		OrderBy("created_at", "desc").
+		Get(&carousels)
+
+	if err != nil {
+		return ctx.Response().Json(http.StatusInternalServerError, map[string]any{
+			"status":  false,
+			"message": "Terjadi kesalahan pada server: " + err.Error(),
+		})
+	}
+
+	return ctx.Response().View().Make("layout/client/header.tmpl", map[string]any{
+		"Carousel": carousels,
 	})
 }
