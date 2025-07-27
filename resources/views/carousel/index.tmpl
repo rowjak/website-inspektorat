@@ -1,18 +1,18 @@
-{{define "user/index.tmpl"}}
+{{define "carousel/index.tmpl"}}
     {{ template "layout/header.tmpl" . }}
-    {{ $route := call .h.route "user" }} 
+    {{ $route := call .h.route "carousel" }} 
     <!-- Page Header -->
     <div class="card custom-card mt-2">
         <div class="card-body">
             <div class="d-md-flex d-block align-items-center justify-content-between page-header-breadcrumb">
                 <h1 class="page-title fw-semibold fs-16 mb-0 font-magnolia">
-                    <i class="bx bxs-user-account"></i> Manajemen User
+                    <i class="bx bx-images"></i> Data Carousel
                 </h1>
                 <div class="ms-md-1 ms-0">
                     <nav>
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">User</li>
+                            <li class="breadcrumb-item active" aria-current="page">Carousel</li>
                         </ol>
                     </nav>
                 </div>
@@ -29,42 +29,36 @@
                     <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body text-start">
-                    <form id="formUpdate" method="post">
+                    <form id="formUpdate" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="_token" value="{{.csrf_token}}">
-                        <input type="hidden" name="id" id="id_user">
+                        <input type="hidden" name="id" id="id_carousel">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group mt-2">
-                                    <label for="name" class="form-label">Nama</label>
-                                    <input class="form-control" type="text" id="nama_lengkap" name="nama_lengkap">
+                                    <label for="keterangan" class="form-label">Keterangan</label>
+                                    <input class="form-control" type="text" id="keterangan" name="keterangan">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group mt-2">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input class="form-control" type="email" id="email" name="email">
+                                    <label for="link" class="form-label">Link</label>
+                                    <input class="form-control" type="text" id="link" name="link">
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group mt-2">
-                                    <label for="nama_opd" class="form-label">Role</label>
-                                    <select class="form-control select2-ubah" name="role" id="role">
-                                        <option value="admin">Admin</option>
-                                        <option value="staf">Staf</option>
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-control select2-ubah" name="status" id="status">
+                                        <option value="" selected disabled>Pilih</option>
+                                        <option value="Ditampilkan">Ditampilkan</option>
+                                        <option value="Disembunyikan">Disembunyikan</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="form-group mt-2">
-                                    <label for="password" class="form-label">Password Baru</label>
-                                    <input class="form-control" type="password" id="password" name="password" placeholder="Password Baru">
-                                    <small class="text-danger">Jika tidak ingin mengganti password, kosongkan kolom ini.</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mt-2">
-                                    <label for="password" class="form-label">Konfirmasi Password Baru</label>
-                                    <input class="form-control" type="password" name="password_confirmation" placeholder="Konfirmasi Password Baru">
+                                    <label for="gambar" class="form-label">Gambar</label>
+                                    <input class="form-control" type="file" id="gambar" name="gambar">
                                 </div>
                             </div>
                         </div>
@@ -83,48 +77,43 @@
             <div class="card custom-card">
                 <div class="card-header">
                     <div class="card-title font-magnolia">
-                        <i class='bx bxs-plus-square'></i> Form Tambah Data User
+                        <i class='bx bxs-plus-square'></i> Form Tambah Data Carousel
                     </div>
                 </div>
                 <div class="card-body pt-0">
-                    <form id="formSimpan" method="post" autocomplete="off">
+                    <form id="formSimpan" method="post" autocomplete="off" enctype="multipart/form-data">
                         <input type="hidden" name="_token" value="{{.csrf_token}}">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group mt-2">
-                                    <label for="name" class="form-label">Nama</label>
-                                    <input class="form-control" type="text" name="nama_lengkap" placeholder="Nama Lengkap">
+                                    <label for="keterangan" class="form-label">Keterangan</label>
+                                    <input class="form-control" type="text" name="keterangan" placeholder="Keterangan">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group mt-2">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input class="form-control" type="email" name="email" placeholder="Email" autocomplete="off">
+                                    <label for="link" class="form-label">Link</label>
+                                    <input class="form-control" type="text" name="link" placeholder="Link">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group mt-2">
-                                    <label for="role" class="form-label">Role</label>
-                                    <select class="form-control select2" name="role" id="frole">
-                                        <option value="" selected disabled>Pilih Role</option>
-                                        <option value="admin">Admin</option>
-                                        <option value="staf">Staf</option>
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-control select2-tambah" name="status" id="fstatus">
+                                        <option value="" selected disabled>Pilih</option>
+                                        <option value="Ditampilkan">Ditampilkan</option>
+                                        <option value="Disembunyikan">Disembunyikan</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group mt-2">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input class="form-control" type="password" name="password" placeholder="Password">
+                                    <label for="gambar" class="form-label">Gambar</label>
+                                    <input class="form-control" type="file" name="gambar" accept="image/*">
+                                    <small class="text-danger">*Ukuran Wajib 1920x900</small>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group mt-2">
-                                    <label for="password" class="form-label">Konfirmasi Password</label>
-                                    <input class="form-control" type="password" name="password_confirmation" placeholder="Password">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group mt-2">
                                     <label class="form-label text-white d-none d-md-block">..</label>
                                     <div class="d-grid gap-2">
@@ -141,7 +130,7 @@
             <div class="card custom-card">
                 <div class="card-header">
                     <div class="card-title font-magnolia">
-                        <i class="bx bxs-user-account"></i> Data Manajemen User
+                        <i class="bx bx-images"></i> Data Carousel
                     </div>
                 </div>
                 <div class="card-body">
@@ -149,10 +138,11 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Nama</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Aksi</th>
+                                <th>Keterangan</th>
+                                <th>Link</th>
+                                <th>Status</th>
+                                <th>Gambar</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -186,16 +176,20 @@
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false },
                     {
-                        data: 'nama_lengkap',
-                        name: 'nama_lengkap'
+                        data: 'keterangan',
+                        name: 'keterangan'
                     },
                     {
-                        data: 'email',
-                        name: 'email'
+                        data: 'link',
+                        name: 'link'
                     },
                     {
-                        data: 'role',
-                        name: 'role'
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'gambar',
+                        name: 'gambar'
                     },
                     {
                         data: 'action',
@@ -219,7 +213,7 @@
                 if (data.status) {
                     notify('success','Berhasil!',data.message);
                     $('#formSimpan').trigger('reset');
-                    $('#frole').val(null).change();
+                    $('#fstatus').val(null).trigger('change');
                     $('input').blur();
                     table.draw();
                 }else{
@@ -245,7 +239,7 @@
             loadingUpdate(true);
 
             var data = new FormData(document.getElementById("formUpdate"));
-            axios.put('{{$route}}/'+$('#id_user').val(),data)
+            axios.put('{{$route}}/'+$('#id_carousel').val(),data)
             .then(function (response) {
                 var data = response.data;
                 loadingUpdate(false);
@@ -321,11 +315,11 @@
                 var data = response.data;
                 var res = data.data;
                 console.log(res);
+                $('#id_carousel').val(res.id);
+                $('#keterangan').val(res.Keterangan);
+                $('#link').val(res.Link);
+                $('#status').val(res.Status).trigger('change');
                 $('#modalUbah').modal('toggle');
-                $('#id_user').val(res.id);
-                $('#role').val(res.Role).change();
-                $('#email').val(res.Email);
-                $('#nama_lengkap').val(res.NamaLengkap);
             })
             .catch(function (error) {
                 notify('danger','Gagal!',error);

@@ -32,6 +32,13 @@ func (r *HomeController) Index(ctx http.Context) http.Response {
 		})
 	}
 
+	// route := facades.Route().Info("storage")
+
+	// return ctx.Response().Json(http.StatusInternalServerError, map[string]any{
+	// 	"status":  true,
+	// 	"message": route,
+	// })
+
 	return ctx.Response().View().Make("layout/client/header.tmpl", map[string]any{
 		"Carousel": carousels,
 	})

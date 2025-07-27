@@ -4,18 +4,36 @@ import (
 	"fmt"
 	"html"
 	"log"
+	"mime/multipart"
+	"os"
+	"path/filepath"
 	"rowjak/website-inspektorat/app/helpers"
+	"rowjak/website-inspektorat/app/jobs"
 	"rowjak/website-inspektorat/app/models"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/goravel/framework/contracts/http"
+	"github.com/goravel/framework/contracts/queue"
 	"github.com/goravel/framework/facades"
 	"github.com/gosimple/slug"
 )
 
 type PostController struct {
 	// Dependent services
+}
+
+type PostInput struct {
+	Judul      string                `form:"judul" json:"judul"`
+	Isi        string                `form:"isi" json:"isi"`
+	Tags       string                `form:"tags" json:"tags"`
+	Thumbnail  *multipart.FileHeader `form:"thumbnail" json:"thumbnail"`
+	Gambar     *multipart.FileHeader `form:"gambar" json:"gambar"`
+	Attachment *multipart.FileHeader `form:"attachment" json:"attachment"`
+	Status     string                `form:"status" json:"status"`
+	KategoriID uint                  `form:"kategori_id" json:"kategori_id"`
 }
 
 func NewPostController() *PostController {
@@ -27,7 +45,11 @@ func NewPostController() *PostController {
 func (r *PostController) Index(ctx http.Context) http.Response {
 	if ctx.Request().Header("X-Requested-With") == "XMLHttpRequest" {
 		// query := facades.Orm().Query()
-		query := facades.Orm().Query().With("PostImage")
+		query := facades.Orm().Query().
+			With("PostImage").
+			With("PostKategori")
+
+		route_berita := facades.Route().Info("home.index")
 
 		return helpers.RenderDataTable(ctx, helpers.DataTableConfig{
 			Model: &models.Post{},
@@ -37,13 +59,47 @@ func (r *PostController) Index(ctx http.Context) http.Response {
 			},
 			FormatRow: func(index int, model any) map[string]any {
 				post := model.(*models.Post)
-				imageCount := len(post.PostImage)
+				var cleanedTags []string
+				for _, tag := range strings.Split(post.Tags, ";") {
+					tag = strings.TrimSpace(tag)
+					if tag != "" {
+						cleanedTags = append(cleanedTags, `<span class="badge bg-info">`+tag+`</span>`)
+					}
+				}
+				status := ""
+				if post.Status == "Ditampilkan" {
+					status = `<span class="badge bg-success">` + post.Status + `</span>`
+				} else {
+					status = `<span class="badge bg-warning">` + post.Status + `</span>`
+				}
+
+				uri := route_berita.Path + "/" + post.Slug
+				url := fmt.Sprintf(`
+					<a target="_blank" href="%s" class="btn btn-sm btn-primary"><i class="bx bx-globe"></i> Lihat Berita</a>
+				`, uri)
+
+				items := []string{
+					"Kategori : " + post.PostKategori.Kategori,
+					"Tags : " + strings.Join(cleanedTags, " "),
+				}
+
+				kategori_tags := helpers.BuildDynamicList(items)
+
+				thumbnail := facades.Storage().Url("berita/thumbnails/" + post.ThumbnailSm)
+
 				return map[string]any{
-					"DT_RowIndex":   index + 1,
-					"judul":         html.EscapeString(post.Judul),
-					"slug":          html.EscapeString(post.Slug),
-					"thumbnail":     html.EscapeString(post.ThumbnailName),
-					"jumlah_gambar": imageCount,
+					"DT_RowIndex":  index + 1,
+					"judul":        html.EscapeString(helpers.GenerateCutWords(post.Judul, 20)),
+					"slug":         url,
+					"kategori_tag": kategori_tags,
+					"kategori": fmt.Sprintf(`
+						<span class="badge bg-primary">%s</span>
+					`, post.PostKategori.Kategori),
+					"status": status,
+					"thumbnail": fmt.Sprintf(`
+						<img src="%s" class="img-fluid" width="100px"/>
+					`, thumbnail),
+					"tanggal": helpers.TanggalStringToIndo(post.TanggalTampil),
 					"action": fmt.Sprintf(`
 						<button class="btn btn-sm btn-primary" onclick="ubah(%d)" data-toggle="tooltip" title="Edit">
 							<i class="bx bxs-edit"></i>
@@ -51,30 +107,72 @@ func (r *PostController) Index(ctx http.Context) http.Response {
 						<button class="btn btn-sm btn-danger" onclick="hapus(%d)" data-toggle="tooltip" title="Delete">
 							<i class="bx bxs-trash"></i>
 						</button>
-					`, post.ID, post.ID), // &d ada 2, itu untuk format ID, format ID
+					`, post.ID, post.ID),
 				}
 			},
 		})
 	}
 
 	meta := helpers.DefaultMeta()
-	meta.Title = "Manajemen User"
-	meta.Description = "Manajemen User."
-	meta.URL = "https://yourdomain.com/beranda"
-	meta.Image = "assets/logo.avif"
+	meta.Title = "Data Berita"
+	meta.Description = "Berita."
 
 	return ctx.Response().View().Make("post/index.tmpl", map[string]any{
 		"Meta": meta,
 	})
 }
 
+func (r *PostController) Create(ctx http.Context) http.Response {
+	var postKategori []models.PostKategori
+	err := facades.Orm().Query().
+		Select("id", "kategori").
+		OrderBy("kategori", "asc").
+		Get(&postKategori)
+
+	if err != nil {
+		return ctx.Response().Json(http.StatusInternalServerError, map[string]any{
+			"status":  false,
+			"message": "Terjadi kesalahan pada server: " + err.Error(),
+		})
+	}
+	var tag []models.Tag
+	err = facades.Orm().Query().
+		Select("slug", "nama").
+		OrderBy("nama", "asc").
+		Get(&tag)
+
+	if err != nil {
+		return ctx.Response().Json(http.StatusInternalServerError, map[string]any{
+			"status":  false,
+			"message": "Terjadi kesalahan pada server: " + err.Error(),
+		})
+	}
+
+	meta := helpers.DefaultMeta()
+	meta.Title = "Publish Berita"
+	meta.Description = "Publish Berita."
+
+	return ctx.Response().View().Make("post/create.tmpl", map[string]any{
+		"Meta":     meta,
+		"Kategori": postKategori,
+		"Tags":     tag,
+	})
+}
+
 func (u *PostController) Store(ctx http.Context) http.Response {
+	// panic("🚨 This should crash if executed")
+
 	validator, err := ctx.Request().Validate(map[string]string{
-		"judul":     "required|min:3",
-		"isi":       "required|min:10",
-		"thumbnail": "required|image", // max 2MB
-		"gambar":    "array",
-		"gambar.*":  "image|max:2048",
+		"isi":         "required|min:10",
+		"tags":        "required",
+		"kategori_id": "required",
+		"status":      "required|in:Ditampilkan,Disembunyikan",
+		"tanggal":     "required",
+
+		"thumbnail":  "required|image",
+		"gambar":     "array",
+		"gambar.*":   "image",
+		"attachment": "file",
 	})
 
 	if err != nil {
@@ -101,86 +199,167 @@ func (u *PostController) Store(ctx http.Context) http.Response {
 		})
 	}
 
-	// Ambil data dari request
-	judul := ctx.Request().Input("judul")
-	isi := ctx.Request().Input("isi")
+	parsed, err := time.Parse("02-01-2006", ctx.Request().Input("tanggal"))
+	if err != nil {
+		errorHtml := `<div class="alert alert-danger" role="alert"><div class="alert-message">Format Tanggal Bukan dd-mm-yyyy</div></div>`
 
-	// Generate slug dari judul
-	slugText := slug.Make(judul)
+		return ctx.Response().Json(http.StatusOK, http.Json{
+			"status":  false,
+			"message": errorHtml,
+		})
+	}
+
+	var input PostInput
+	err = ctx.Request().Bind(&input)
+	if err != nil {
+		return ctx.Response().Json(http.StatusInternalServerError, http.Json{
+			"status":  false,
+			"message": "Error binding input data" + err.Error(),
+		})
+	}
 
 	uuidString := uuid.New().String()
 
-	var thumbnailOgName string
-	var thumbnailName string
 	thumbnailFile, err := ctx.Request().File("thumbnail")
-	if err == nil && thumbnailFile != nil {
-		thumbnailOgName = thumbnailFile.GetClientOriginalName()
+	if err != nil || thumbnailFile == nil {
+		return ctx.Response().Json(http.StatusBadRequest, http.Json{
+			"status":  false,
+			"message": "No file uploaded",
+		})
+	}
 
-		thumbnailName = uuidString + "." + thumbnailFile.GetClientOriginalExtension()
-		thumbnailPath := "posts/thumbnails/"
+	// Buat UUID dan nama file untuk thumbnail
+	originalExt := thumbnailFile.GetClientOriginalExtension()
+	tempFilename := uuidString + "." + originalExt
+	tempPath := "temp"
 
-		if _, err := thumbnailFile.StoreAs(thumbnailPath, thumbnailName); err != nil {
+	// Simpan sementara di storage/app/temp/
+	if _, err := thumbnailFile.StoreAs(tempPath, tempFilename); err != nil {
+		return ctx.Response().Json(http.StatusInternalServerError, http.Json{
+			"status":  false,
+			"message": "Failed to store temporary file",
+		})
+	}
+
+	user_id, _ := helpers.StringToUint(ctx.Request().Session().Get("user_id"))
+	slugText := slug.Make(input.Judul)
+
+	attachmentOgName := ""
+	attachmentName := ""
+	attachmentMime := ""
+	attachmentSize := int64(0)
+
+	attachmentFile, err := ctx.Request().File("attachment")
+	if err != nil || attachmentFile == nil {
+		facades.Log().Info("Tidak ada attachment")
+	} else {
+		originalExt := attachmentFile.GetClientOriginalExtension()
+		attachmentOgName = attachmentFile.GetClientOriginalName()
+		attachmentName = uuidString + "." + originalExt
+		path := "berita/attachments/"
+
+		if _, err := attachmentFile.StoreAs(path, attachmentName); err != nil {
+			facades.Log().Errorf("Gagal menyimpan file: %v", err)
 			return ctx.Response().Json(http.StatusInternalServerError, http.Json{
 				"status":  false,
-				"message": "Error uploading thumbnail",
+				"message": "Gagal menyimpan file attachment.",
+			})
+		}
+
+		if attachmentMime, err = attachmentFile.MimeType(); err != nil {
+			facades.Log().Errorf("Gagal mendapatkan mime type: %v", err)
+			return ctx.Response().Json(http.StatusInternalServerError, http.Json{
+				"status":  false,
+				"message": "Gagal memproses metadata file.",
+			})
+		}
+
+		if attachmentSize, err = attachmentFile.Size(); err != nil {
+			facades.Log().Errorf("Gagal mendapatkan ukuran file: %v", err)
+			return ctx.Response().Json(http.StatusInternalServerError, http.Json{
+				"status":  false,
+				"message": "Gagal memproses metadata file.",
 			})
 		}
 	}
 
-	// Buat instance post
+	// Simpan post ke database terlebih dahulu dengan thumbnail kosong
 	post := models.Post{
-		Judul:           judul,
-		Slug:            slugText,
-		Isi:             isi,
-		ThumbnailOgName: thumbnailOgName,
-		ThumbnailName:   thumbnailName,
+		Judul:            input.Judul,
+		Slug:             slugText,
+		Readmore:         helpers.GenerateCutWords(input.Isi, 80),
+		Isi:              input.Isi,
+		KategoriID:       input.KategoriID,
+		Tags:             input.Tags,
+		Status:           input.Status,
+		ThumbnailLg:      "", // akan diupdate oleh job
+		ThumbnailSm:      "", // akan diupdate oleh job
+		AttachmentOgName: attachmentOgName,
+		AttachmentName:   attachmentName,
+		AttachmentSize:   attachmentSize,
+		AttachmentMime:   attachmentMime,
+		UserID:           user_id,
+		TanggalTampil:    parsed.Format("2006-01-02"),
 	}
 
-	// Simpan post ke database
 	if err := facades.Orm().Query().Create(&post); err != nil {
 		if facades.Config().GetString("app.env") == "local" {
 			log.Println("Failed to create post:", err.Error())
 		}
 		return ctx.Response().Json(http.StatusInternalServerError, http.Json{
 			"status":  false,
-			"message": "Error saving post",
+			"message": "Error saving post" + err.Error(),
 		})
 	}
 
+	args := []queue.Arg{
+		{Type: "int", Value: post.ID},
+		{Type: "string", Value: tempFilename},
+		{Type: "string", Value: uuidString},
+		{Type: "string", Value: "public/berita/thumbnails/"},
+	}
+
+	if err := facades.Queue().Job(&jobs.ConvertThumbnailJob{}, args).Dispatch(); err != nil {
+		log.Printf("Failed to dispatch thumbnail conversion job: %v", err)
+
+		return ctx.Response().Json(http.StatusInternalServerError, http.Json{
+			"status":  false,
+			"message": "Error processing thumbnail",
+		})
+	}
+
+	// Proses multiple images jika ada
 	imageFiles, err := ctx.Request().Files("gambar")
 	if err != nil || len(imageFiles) == 0 {
-		log.Println("Failed to create post:", err.Error())
-		// Tidak ada file dikirim atau field tidak ada — lanjutkan tanpa error
+		log.Println("Tidak ada images terkirim")
 	} else {
-		for _, file := range imageFiles {
+		for index, file := range imageFiles {
 			if file != nil && file.GetClientOriginalName() != "" {
-				// Buat nama file unik
-				imageName := uuid.New().String() + "." + file.GetClientOriginalExtension()
-				imagePath := "posts/images/"
+				// Buat nama file unik untuk setiap gambar
+				originalExt := file.GetClientOriginalExtension()
+				fileNameOnly := uuidString + "-" + strconv.Itoa(index+1)
+				tempFilename := fileNameOnly + "." + originalExt
 
-				// Simpan file
-				if _, err := file.StoreAs(imagePath, imageName); err != nil {
-					return ctx.Response().Json(http.StatusInternalServerError, http.Json{
-						"status":  false,
-						"message": "Error uploading image: " + file.GetClientOriginalName(),
-					})
+				// Simpan sementara
+				if _, err := file.StoreAs(tempPath, tempFilename); err != nil {
+					log.Printf("Gagal menyimpan file sementara: %s - %v", file.GetClientOriginalName(), err)
+					continue
 				}
 
-				postImage := models.PostImage{
-					PostID:      post.ID,
-					ImageOgName: imageName,
-					ImageName:   file.GetClientOriginalName(),
+				// Dispatch job untuk konversi gambar
+
+				args := []queue.Arg{
+					{Type: "int", Value: post.ID},
+					{Type: "string", Value: tempFilename},
+					{Type: "string", Value: "public/berita/images/"},
+					{Type: "string", Value: fileNameOnly},
 				}
 
-				// Simpan post ke database
-				if err := facades.Orm().Query().Create(&postImage); err != nil {
-					if facades.Config().GetString("app.env") == "local" {
-						log.Println("Failed to create post:", err.Error())
-					}
-					return ctx.Response().Json(http.StatusInternalServerError, http.Json{
-						"status":  false,
-						"message": "Error saving post",
-					})
+				if err := facades.Queue().Job(&jobs.ConvertImageJob{}, args).Dispatch(); err != nil {
+					log.Printf("Failed to dispatch image conversion job for %s: %v", file.GetClientOriginalName(), err)
+					// Hapus file temp jika job gagal didispatch
+					tempFullPath := filepath.Join("storage/app/", tempPath, tempFilename)
+					_ = os.Remove(tempFullPath)
 				}
 			}
 		}
@@ -188,7 +367,7 @@ func (u *PostController) Store(ctx http.Context) http.Response {
 
 	return ctx.Response().Json(http.StatusOK, http.Json{
 		"status":  true,
-		"message": "Data berhasil disimpan!",
+		"message": "Data berhasil disimpan! Gambar sedang diproses di background.",
 	})
 }
 
@@ -325,10 +504,10 @@ func (u *PostController) Destroy(ctx http.Context) http.Response {
 	// Hapus file gambar terkait
 	for _, image := range post.PostImage {
 		// Path relatif terhadap direktori 'storage' dari disk 'local'
-		storagePath := fmt.Sprintf("posts/images/%s", image.ImageName)
+		storagePath := fmt.Sprintf("berita/images/%s", image.ImageLg)
 
 		// Hapus file fisik
-		if err := facades.Storage().Disk("local").Delete(storagePath); err != nil {
+		if err := facades.Storage().Disk("public").Delete(storagePath); err != nil {
 			facades.Log().Error(fmt.Sprintf("Gagal menghapus file: %s, error: %v", storagePath, err))
 		}
 	}
@@ -340,11 +519,27 @@ func (u *PostController) Destroy(ctx http.Context) http.Response {
 		})
 	}
 
-	storagePath := fmt.Sprintf("posts/thumbnails/%s", post.ThumbnailName)
+	storagePath := fmt.Sprintf("berita/thumbnails/%s", post.ThumbnailLg)
 
 	// Hapus file fisik
-	if err := facades.Storage().Disk("local").Delete(storagePath); err != nil {
+	if err := facades.Storage().Disk("public").Delete(storagePath); err != nil {
 		facades.Log().Error(fmt.Sprintf("Gagal menghapus file: %s, error: %v", storagePath, err))
+	}
+
+	storagePath = fmt.Sprintf("berita/thumbnails/%s", post.ThumbnailSm)
+
+	// Hapus file fisik
+	if err := facades.Storage().Disk("public").Delete(storagePath); err != nil {
+		facades.Log().Error(fmt.Sprintf("Gagal menghapus file: %s, error: %v", storagePath, err))
+	}
+
+	if post.AttachmentName != "" {
+		storagePath = fmt.Sprintf("berita/attachments/%s", post.AttachmentName)
+
+		// Hapus file fisik
+		if err := facades.Storage().Disk("public").Delete(storagePath); err != nil {
+			facades.Log().Error(fmt.Sprintf("Gagal menghapus file: %s, error: %v", storagePath, err))
+		}
 	}
 
 	if _, err := facades.Orm().Query().Delete(&post); err != nil {

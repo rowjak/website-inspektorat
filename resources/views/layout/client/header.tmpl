@@ -99,7 +99,7 @@
                     </div>
                 </div>
             </div>
-            <div id="sticky-header" class="menu-area">
+            <div id="sticky-header" class="menu-area py-2">
                 <div class="container-fluid p-0">
                     <div class="row g-0">
                         <div class="col-12">
@@ -133,7 +133,7 @@
                                                             <li><a href="index.html">Renstra</a></li>
                                                         </ul>
                                                     </li>
-                                                    <li class="menu-item-has-children"><a href="#" class="px-2">Dasar Hukum</a>
+                                                    <li class="menu-item-has-children"><a href="#" class="px-2">Peraturan</a>
                                                         <ul class="sub-menu">
                                                             <li><a href="index.html">Peraturan Bupati</a></li>
                                                         </ul>
@@ -211,7 +211,7 @@
             </div>
 
             <!-- offCanvas-area -->
-            <div class="offCanvas-wrap">
+            {{/* <div class="offCanvas-wrap">
                 <div class="offCanvas-body">
                     <div class="offCanvas-toggle">
                         <span></span>
@@ -248,7 +248,7 @@
                     </div>
                 </div>
             </div>
-            <div class="offCanvas-overlay"></div>
+            <div class="offCanvas-overlay"></div> */}}
             <!-- offCanvas-area-end -->
         </header>
         <!-- header-area-end -->
@@ -265,24 +265,32 @@
                                 <ul class="glide__slides">
                                     {{range $index, $item := .Carousel}}
                                         <li class="glide__slide">
-                                            <img class="img-fluid" src="assets/test-carousel.jpg" >
-                                            {{/* @if ($item->url_onclick == 'Ya')
-                                                <a href="{{ $item->url }}" target="_blank" class="th-btn px-1 py-3">{{ $item->button }}</a>
-                                            @endif */}}
+                                            <picture>
+                                                <source srcset="/storage/carousel/{{$item.ImageSm}}" type="image/avif">
+                                                <source srcset="/storage/carousel/{{$item.ImageLg}}" type="image/webp">
+                                                <img class="img-fluid" src="/storage/carousel/{{$item.ImageLg}}" alt="Carousel Image">
+                                            </picture>
+                                            {{if ne $item.Link ""}}
+                                                <a href="{{ $item.Link }}" target="_blank" class="btn btn-warning text-white px-2 py-2">Kunjungi Link</a>
+                                            {{end}}
                                         </li>
                                     {{end}}
                                 </ul>
                             </div>
                         </div>
-                        <div class="glide heropeekm d-block d-lg-none mt-lg-0 mt-20">
+                        <div class="glide heropeekm d-block d-lg-none">
                             <div class="glide__track" data-glide-el="track">
                                 <ul class="glide__slides">
                                     {{range $index, $item := .Carousel}}
                                         <li class="glide__slide">
-                                            <img class="img-fluid" src="assets/test-carousel.jpg" >
-                                            {{/* @if ($item->url_onclick == 'Ya')
-                                                <a href="{{ $item->url }}" target="_blank" class="th-btn px-1 py-3">{{ $item->button }}</a>
-                                            @endif */}}
+                                            <picture>
+                                                <source srcset="/storage/carousel/{{$item.ImageSm}}" type="image/avif">
+                                                <source srcset="/storage/carousel/{{$item.ImageLg}}" type="image/webp">
+                                                <img class="img-fluid" src="/storage/carousel/{{$item.ImageLg}}" alt="Carousel Image">
+                                            </picture>
+                                            {{if ne $item.Link ""}}
+                                                <a href="{{ $item.Link }}" target="_blank" class="btn btn-warning text-white px-2 py-2">Kunjungi Link</a>
+                                            {{end}}
                                         </li>
                                     {{end}}
                                 </ul>
@@ -292,13 +300,44 @@
                 </div>
             </section>
 
+
+            <!-- about-area -->
+            <section class="about-area pt-40 pb-40">
+                <div class="container">
+                    <div class="row align-items-center justify-content-center">
+                        <div class="col-lg-7 col-md-10 order-0 order-lg-2">
+                            <div class="about-img">
+                                <div class="left-img">
+                                    <img src="assets/310x290.jpg" alt="">
+                                    <img src="assets/310x220.jpg" alt="">
+                                </div>
+                                <div class="right-img">
+                                    <img src="assets/410x531.jpg" alt="">
+                                </div>
+                                <img src="assets/zhen/img/images/about_shape.png" alt="" class="shape">
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="about-content">
+                                <div class="section-title-five">
+                                    <span class="sub-title">INSPEKTUR KABUPATEN PEKALONGAN</span>
+                                    <h2 class="title">Drs. ALI RIZA, M.Si.</h2>
+                                </div>
+                                <p>Assalamu’alaikum Warahmatullahi Wabarakaatuh,<br/>salam sejahtera Selamat datang di Website Inspektorat Daerah Kabupaten Pekalongan. Website ini diharapkan dapat menjadi jendela informasi dan komunikasi tentang pengawasan pemerintahan di Kabupaten Pekalongan. Terbukanya akses informasi dan komunikasi yang efektif menjadi jalan bagi pelaksanaan fungsi-fungsi pemerintahan (regulasi, pelayanan, pembangunan, pemberdayaan dan perlindungan) secara optimal. Semoga bermanfaat<br/>Wassalamu’alaikum Warahmatullahi Wabarakaatuh</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- about-area-end -->
+
             <!-- categories-area -->
             <section class="categories-area">
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-lg-6">
                             <div class="section-title section-title-two text-center mb-30">
-                                <h2 class="title">Our Top Categories</h2>
+                                <h2 class="title">Link Terkait</h2>
                                 <p>Browned butter and brown sugar caramelly goodness, crispy edges thick and soft centers and melty little puddles</p>
                             </div>
                         </div>
@@ -316,6 +355,101 @@
             </section>
             <!-- categories-area-end -->
 
+            <!-- video-post-area -->
+            <section class="video-post-area video-post-bg" data-background="assets/zhen/img/bg/video_post_bg.jpg">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="section-title-wrap-three mb-40">
+                                <div class="section-title-three black-title">
+                                    <h6 class="title">Video
+                                        <span class="section-title-svg">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 246 40" fill="none" preserveAspectRatio="none">
+                                                <path d="M10.1448 2.85061C10.6524 1.15867 12.2097 0 13.9761 0H241.624C244.303 0 246.225 2.58294 245.455 5.14939L235.855 37.1494C235.348 38.8413 233.79 40 232.024 40H4.37612C1.69667 40 -0.225117 37.4171 0.544817 34.8506L10.1448 2.85061Z" fill="currentcolor" />
+                                            </svg>
+                                        </span>
+                                    </h6>
+                                    <div class="section-title-line-three"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="video-post-item big-post">
+                                <div class="video-post-thumb">
+                                    <a href="blog-details.html"><img src="assets/zhen/img/blog/video_post01.jpg" alt=""></a>
+                                    <a href="https://www.youtube.com/watch?v=1iIZeIy7TqM" class="play-btn popup-video"><i class="fas fa-play"></i></a>
+                                </div>
+                                <div class="video-post-content">
+                                    <a href="blog.html" class="post-tag post-tag-three">Fighter</a>
+                                    <h2 class="post-title bold-underline"><a href="blog-details.html">Exciting New Browned Chocolate Gaming Cookies Daily Breakfast</a></h2>
+                                    <div class="blog-post-meta white-blog-meta">
+                                        <ul class="list-wrap">
+                                            <li><i class="flaticon-user"></i>by<a href="author.html">Admin</a></li>
+                                            <li><i class="flaticon-calendar"></i>27 August, 2024</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="video-small-post-wrap">
+                                <div class="video-post-item small-post">
+                                    <div class="video-post-thumb">
+                                        <a href="blog-details.html"><img src="assets/zhen/img/blog/video_post02.jpg" alt=""></a>
+                                        <a href="https://www.youtube.com/watch?v=1iIZeIy7TqM" class="play-btn popup-video"><i class="fas fa-play"></i></a>
+                                    </div>
+                                    <div class="video-post-content">
+                                        <a href="blog.html" class="post-tag post-tag-three">Animation</a>
+                                        <h2 class="post-title"><a href="blog-details.html">A Guide To Getting Data Visualization Right</a></h2>
+                                        <div class="blog-post-meta white-blog-meta">
+                                            <ul class="list-wrap">
+                                                <li><i class="flaticon-user"></i>by<a href="author.html">Admin</a></li>
+                                                <li><i class="flaticon-calendar"></i>27 August, 2024</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="video-post-item small-post">
+                                    <div class="video-post-thumb">
+                                        <a href="blog-details.html"><img src="assets/zhen/img/blog/video_post03.jpg" alt=""></a>
+                                        <a href="https://www.youtube.com/watch?v=1iIZeIy7TqM" class="play-btn popup-video"><i class="fas fa-play"></i></a>
+                                    </div>
+                                    <div class="video-post-content">
+                                        <a href="blog.html" class="post-tag post-tag-three">Action</a>
+                                        <h2 class="post-title"><a href="blog-details.html">Fluid Typography: Predicting A Problem With Your User’s Zoom-In</a></h2>
+                                        <div class="blog-post-meta white-blog-meta">
+                                            <ul class="list-wrap">
+                                                <li><i class="flaticon-user"></i>by<a href="author.html">Admin</a></li>
+                                                <li><i class="flaticon-calendar"></i>27 August, 2024</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="video-post-item small-post">
+                                    <div class="video-post-thumb">
+                                        <a href="blog-details.html"><img src="assets/zhen/img/blog/video_post04.jpg" alt=""></a>
+                                        <a href="https://www.youtube.com/watch?v=1iIZeIy7TqM" class="play-btn popup-video"><i class="fas fa-play"></i></a>
+                                    </div>
+                                    <div class="video-post-content">
+                                        <a href="blog.html" class="post-tag post-tag-three">Racing</a>
+                                        <h2 class="post-title"><a href="blog-details.html">Deploying CSS Logical Properties On Web Apps</a></h2>
+                                        <div class="blog-post-meta white-blog-meta">
+                                            <ul class="list-wrap">
+                                                <li><i class="flaticon-user"></i>by<a href="author.html">Admin</a></li>
+                                                <li><i class="flaticon-calendar"></i>27 August, 2024</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- video-post-area-end -->
+
             <!-- recipe-area -->
             <section class="recipe-area pt-70 pb-40">
                 <div class="container">
@@ -323,10 +457,10 @@
                         <div class="col-lg-12">
                             <div class="section-title-wrap mb-30">
                                 <div class="section-title">
-                                    <h2 class="title">Weekly Best Recipes</h2>
+                                    <h2 class="title">Berita Terbaru</h2>
                                 </div>
                                 <div class="view-all-btn">
-                                    <a href="blog.html" class="link-btn">View All
+                                    <a href="blog.html" class="link-btn">Lihat Semua
                                         <span class="svg-icon">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10" fill="none">
                                                 <path d="M1.07692 10L0 8.92308L7.38462 1.53846H0.769231V0H10V9.23077H8.46154V2.61538L1.07692 10Z" fill="currentColor" />
@@ -418,7 +552,7 @@
                             <div class="col-70">
                                 <div class="section-title-wrap mb-30">
                                     <div class="section-title">
-                                        <h2 class="title">Healthy Recipes</h2>
+                                        <h2 class="title">Pengumuman</h2>
                                     </div>
                                     <div class="section-title-line"></div>
                                 </div>
@@ -429,7 +563,7 @@
                                                 <a href="blog-details.html"><img src="assets/zhen/img/blog/hr_post01.jpg" alt=""></a>
                                             </div>
                                             <div class="featured-post-content">
-                                                <a href="blog.html" class="post-tag">Lunch</a>
+                                                <a href="blog.html" class="post-tag">Alur Aduan Masyarakat</a>
                                                 <h2 class="post-title"><a href="blog-details.html">Rom prehensive Checklist
                                                 Running Workshops</a></h2>
                                                 <div class="blog-post-meta">
@@ -447,7 +581,7 @@
                                                 <a href="blog-details.html"><img src="assets/zhen/img/blog/hr_post02.jpg" alt=""></a>
                                             </div>
                                             <div class="featured-post-content">
-                                                <a href="blog.html" class="post-tag">Breakfast</a>
+                                                <a href="blog.html" class="post-tag">SKM</a>
                                                 <h2 class="post-title"><a href="blog-details.html">The Best Handoff Is No
                                                 Handoff</a></h2>
                                                 <div class="blog-post-meta">
@@ -465,7 +599,7 @@
                                                 <a href="blog-details.html"><img src="assets/zhen/img/blog/hr_post03.jpg" alt=""></a>
                                             </div>
                                             <div class="featured-post-content">
-                                                <a href="blog.html" class="post-tag">Dessert</a>
+                                                <a href="blog.html" class="post-tag">Alur Konsultasi Online</a>
                                                 <h2 class="post-title"><a href="blog-details.html">Internationalization
                                                 With React Server</a></h2>
                                                 <div class="blog-post-meta">

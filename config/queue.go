@@ -1,7 +1,9 @@
 package config
 
 import (
+	"github.com/goravel/framework/contracts/queue"
 	"github.com/goravel/framework/facades"
+	redisfacades "github.com/goravel/redis/facades"
 )
 
 func init() {
@@ -23,6 +25,14 @@ func init() {
 				"connection": "postgres",
 				"queue":      "default",
 				"concurrent": 1,
+			},
+			"redis": map[string]any{
+				"driver":     "custom",
+				"connection": "default",
+				"queue":      "default",
+				"via": func() (queue.Driver, error) {
+					return redisfacades.Queue("redis") // The `redis` value is the key of `connections`
+				},
 			},
 		},
 

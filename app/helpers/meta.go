@@ -13,7 +13,7 @@ func DefaultMeta() MetaData {
 		Title:       "Goravel Starter - My Web App",
 		Description: "Goravel starter application with clean structure.",
 		Keywords:    "goravel, golang, web, starter, seo",
-		Image:       "https://yourdomain.com/assets/default-og.png",
-		URL:         "https://yourdomain.com",
+		Image:       "assets/logo.avif",
+		URL:         "https://inspektorat.pekalongannkabg.go.id",
 	}
 }

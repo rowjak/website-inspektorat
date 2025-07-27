@@ -11,36 +11,41 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     {{ template "layout/meta.tmpl" .Meta }}
 
+    {{ $assets := call .h.route "assets" }}
+
     <!-- Favicon -->
-    <link rel="icon" href="assets/logo.avif" type="image/avif">
+    <link rel="icon" href="{{$assets}}/logo.avif" type="image/avif">
 
     <!-- Choices JS -->
-    <script src="assets/shaka/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+    
+    <script src="{{$assets}}/shaka/libs/choices.js/public/assets/scripts/choices.min.js"></script>
 
     <!-- Main Theme Js -->
-    <script src="assets/shaka/js/main.js"></script>
+    <script src="{{$assets}}/shaka/js/main.js"></script>
 
     <!-- Bootstrap Css -->
-    <link id="style" href="assets/shaka/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" >
+    <link id="style" href="{{$assets}}/shaka/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" >
 
     <!-- Style Css -->
-    <link href="assets/shaka/css/styles.min.css" rel="stylesheet" >
+    <link href="{{$assets}}/shaka/css/styles.min.css" rel="stylesheet" >
 
     <!-- Icons Css -->
-    <link href="assets/shaka/css/icons.css" rel="stylesheet" >
+    <link href="{{$assets}}/shaka/css/icons.css" rel="stylesheet" >
 
     <!-- Node Waves Css -->
-    <link href="assets/shaka/libs/node-waves/waves.min.css" rel="stylesheet" >
+    <link href="{{$assets}}/shaka/libs/node-waves/waves.min.css" rel="stylesheet" >
 
     <!-- Simplebar Css -->
-    <link href="assets/shaka/libs/simplebar/simplebar.min.css" rel="stylesheet" >
+    <link href="{{$assets}}/shaka/libs/simplebar/simplebar.min.css" rel="stylesheet" >
 
     <!-- Color Picker Css -->
-    <link rel="stylesheet" href="assets/shaka/libs/flatpickr/flatpickr.min.css">
-    <link rel="stylesheet" href="assets/shaka/libs/@simonwep/pickr/themes/nano.min.css">
+    <link rel="stylesheet" href="{{$assets}}/shaka/libs/flatpickr/flatpickr.min.css">
+    <link rel="stylesheet" href="{{$assets}}/shaka/libs/@simonwep/pickr/themes/nano.min.css">
 
     <!-- Choices Css -->
-    <link rel="stylesheet" href="assets/shaka/libs/choices.js/public/assets/styles/choices.min.css">
+    <link rel="stylesheet" href="{{$assets}}/shaka/libs/choices.js/public/assets/styles/choices.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css"/>
 
     <!-- Datatables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
@@ -49,15 +54,15 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
 
     <!-- Sweetalerts CSS -->
-    <link rel="stylesheet" href="assets/shaka/libs/sweetalert2/sweetalert2.min.css">
+    <link rel="stylesheet" href="{{$assets}}/shaka/libs/sweetalert2/sweetalert2.min.css">
 
     <style>
         @font-face {
             font-family: 'Magnolia-Script';
-            src:url('assets/shaka/icon-fonts/magnolia-script/Magnolia-Script.ttf.woff') format('woff'),
-                url('assets/shaka/icon-fonts/magnolia-script/Magnolia-Script.ttf.svg#Magnolia-Script') format('svg'),
-                url('assets/shaka/icon-fonts/magnolia-script/Magnolia-Script.ttf.eot'),
-                url('assets/shaka/icon-fonts/magnolia-script/Magnolia-Script.ttf.eot?#iefix') format('embedded-opentype');
+            src:url('{{$assets}}/shaka/icon-fonts/magnolia-script/Magnolia-Script.ttf.woff') format('woff'),
+                url('{{$assets}}/shaka/icon-fonts/magnolia-script/Magnolia-Script.ttf.svg#Magnolia-Script') format('svg'),
+                url('{{$assets}}/shaka/icon-fonts/magnolia-script/Magnolia-Script.ttf.eot'),
+                url('{{$assets}}/shaka/icon-fonts/magnolia-script/Magnolia-Script.ttf.eot?#iefix') format('embedded-opentype');
             font-weight: normal;
             font-style: normal;
         }
@@ -68,7 +73,7 @@
 
         .background-light
         {
-            background-image: url("assets/shaka/images/background.avif");
+            background-image: url("{{$assets}}/shaka/images/background.avif");
             background-repeat: repeat;
             background-position: center;
         }
@@ -115,12 +120,12 @@
                     <div class="header-element">
                         <div class="horizontal-logo">
                             <a href="" class="header-logo">
-                                <img src="assets/logo.avif" alt="logo" class="desktop-logo">
-                                <img src="assets/logo.avif" alt="logo" class="toggle-logo">
-                                <img src="assets/shaka/images/brand-logos/logo-horizontal-dark.avif" alt="logo" class="desktop-dark">
-                                <img src="assets/logo.avif" alt="logo" class="toggle-dark">
-                                <img src="assets/shaka/images/brand-logos/logo-horizontal-light.avif" alt="logo" class="desktop-white">
-                                <img src="assets/logo.avif" alt="logo" class="toggle-white">
+                                <img src="{{$assets}}/logo.avif" alt="logo" class="desktop-logo">
+                                <img src="{{$assets}}/logo.avif" alt="logo" class="toggle-logo">
+                                <img src="{{$assets}}/shaka/images/brand-logos/logo-horizontal-dark.avif" alt="logo" class="desktop-dark">
+                                <img src="{{$assets}}/logo.avif" alt="logo" class="toggle-dark">
+                                <img src="{{$assets}}/shaka/images/brand-logos/logo-horizontal-light.avif" alt="logo" class="desktop-white">
+                                <img src="{{$assets}}/logo.avif" alt="logo" class="toggle-white">
                             </a>
                         </div>
                     </div>
@@ -300,7 +305,7 @@
                             <div class="d-flex align-items-center">
                                 <span class="me-2 d-none d-md-block">{{.auth_user.name}}</span>
                                 <div class="me-sm-2 me-0">
-                                    <img src="assets/logo.avif" alt="img" width="32" height="32" class="rounded-circle">
+                                    <img src="{{$assets}}/logo.avif" alt="img" width="32" height="32" class="rounded-circle">
                                 </div>
                             </div>
                         </a>
@@ -311,7 +316,7 @@
                             <li><a class="dropdown-item d-flex border-block-end" href="to-do-list.html"><i class="ti ti-clipboard-check fs-18 me-2 op-7"></i>Task Manager</a></li>
                             <li><a class="dropdown-item d-flex" href="settings.html"><i class="ti ti-adjustments-horizontal fs-18 me-2 op-7"></i>Settings</a></li>
                             <li><a class="dropdown-item d-flex" href="chat.html"><i class="ti ti-headset fs-18 me-2 op-7"></i>Support</a></li>
-                            <li><a class="dropdown-item d-flex" href="/logout"><i class="ti ti-logout fs-18 me-2 op-7"></i>Log Out</a></li>
+                            <li><a class="dropdown-item d-flex" href="{{call .h.route "auth.logout"}}"><i class="ti ti-logout fs-18 me-2 op-7"></i>Log Out</a></li>
                         </ul>
                     </div>
                     <!-- End::header-element -->
@@ -340,12 +345,12 @@
             <!-- Start::main-sidebar-header -->
             <div class="main-sidebar-header">
                 <a href="/dashboard" class="header-logo">
-                    <img src="assets/shaka/images/brand-logos/logo-horizontal-dark.avif" alt="logo" class="desktop-logo">
-                    <img src="assets/logo.avif" alt="logo" class="toggle-logo">
-                    <img src="assets/shaka/images/brand-logos/logo-horizontal-light.avif" alt="logo" class="desktop-dark">
-                    <img src="assets/logo.avif" alt="logo" class="toggle-dark">
-                    <img src="assets/shaka/images/brand-logos/logo-horizontal-dark.avif" alt="logo" class="desktop-white">
-                    <img src="assets/logo.avif" alt="logo" class="toggle-white">
+                    <img src="{{$assets}}/shaka/images/brand-logos/logo-horizontal-dark.avif" alt="logo" class="desktop-logo">
+                    <img src="{{$assets}}/logo.avif" alt="logo" class="toggle-logo">
+                    <img src="{{$assets}}/shaka/images/brand-logos/logo-horizontal-light.avif" alt="logo" class="desktop-dark">
+                    <img src="{{$assets}}/logo.avif" alt="logo" class="toggle-dark">
+                    <img src="{{$assets}}/shaka/images/brand-logos/logo-horizontal-dark.avif" alt="logo" class="desktop-white">
+                    <img src="{{$assets}}/logo.avif" alt="logo" class="toggle-white">
                 </a>
             </div>
             <!-- End::main-sidebar-header -->
@@ -359,88 +364,123 @@
                         <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24"> <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path> </svg>
                     </div>
                     <ul class="main-menu">
-                        <!-- Start::slide__category -->
                         <li class="slide__category"><span class="category-name">Main</span></li>
-                        <!-- End::slide__category -->
-
-                        <!-- Start::slide -->
                         <li class="slide">
-                            <a href="/dashboard" class="side-menu__item {{ call .h.isActive "/dashboard" }}">
+                            <a href="{{ call .h.route "dashboard.index"}}" class="side-menu__item {{ call .h.isActive "/admin/dashboard" }}">
                                 <i class="bx bxs-dashboard side-menu__icon"></i>
                                 <span class="side-menu__label">Dashboard</span>
                             </a>
                         </li>
-                        <!-- End::slide -->
 
-                        <!-- Start::slide__category -->
                         <li class="slide__category"><span class="category-name">General</span></li>
-                        <!-- End::slide__category -->
-
-
-                        <!-- Start::slide -->
-                        <li class="slide">
-                            <a href="/user" class="side-menu__item {{ call .h.isActive "/user" }}">
-                                <i class="bx bxs-user-account side-menu__icon"></i>
-                                <span class="side-menu__label">Manajemen User</span>
-                            </a>
-                        </li>
-                        <!-- End::slide -->
-
-                        <!-- Start::slide -->
-                        <li class="slide">
-                            <a href="/post" class="side-menu__item {{ call .h.isActive "/post" }}">
-                                <i class="bx bx-images side-menu__icon"></i>
-                                <span class="side-menu__label">Post Image-Multi Image</span>
-                            </a>
-                        </li>
-                        <!-- End::slide -->
-
-                        <!-- Start::slide -->
-                        <li class="slide">
-                            <a href="/file-encrypt" class="side-menu__item {{ call .h.isActive "/file-encrypt" }}">
-                                <i class="bx bx-file side-menu__icon"></i>
-                                <span class="side-menu__label">Upload Encrypt File</span>
-                            </a>
-                        </li>
-                        <!-- End::slide -->
-
                         <li class="slide has-sub">
                             <a href="javascript:void(0);" class="side-menu__item">
-                                <i class="bx bx-list-ul side-menu__icon"></i>
-                                <span class="side-menu__label">Multimenu</span>
+                                <i class="bx bx-building-house side-menu__icon"></i>
+                                <span class="side-menu__label">Profil</span>
                                 <i class="bx bx-chevrons-right side-menu__angle"></i>
                             </a>
                             <ul class="slide-menu child1">
                                 <li class="slide side-menu__label1">
-                                    <a href="javascript:void(0)">Multimenu</a>
+                                    <a href="javascript:void(0)">Profil</a>
                                 </li>
                                 <li class="slide">
-                                    <a href="google-maps.html" class="side-menu__item">Menu 1</a>
+                                    <a href="google-maps.html" class="side-menu__item">Visi Misi</a>
                                 </li>
                                 <li class="slide">
-                                    <a href="google-maps.html" class="side-menu__item">Menu 2</a>
+                                    <a href="google-maps.html" class="side-menu__item">Tugas Pokok &amp; Fungsi</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="google-maps.html" class="side-menu__item">Profil Organisasi</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="google-maps.html" class="side-menu__item">Pejabat Struktural</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="google-maps.html" class="side-menu__item">Bidang Inspektorat</a>
                                 </li>
                             </ul>
                         </li>
-                        <!-- End::slide -->
-
-                        <!-- Start::slide -->
                         <li class="slide">
-                            <a target="_blank" href="http://template.test/admin/nixlotadmin-30/HTML/dist/html/" class="side-menu__item">
+                            <a href="{{call .h.route "carousel"}}" class="side-menu__item {{ call .h.isActive "/admin/carousel" }}">
+                                <i class="bx bx-images side-menu__icon"></i>
+                                <span class="side-menu__label">Carousel</span>
+                            </a>
+                        </li>
+                        <li class="slide">
+                            <a href="{{call .h.route "berita"}}" class="side-menu__item {{ call .h.isActive "/admin/berita" }}">
+                                <i class="bx bx-news side-menu__icon"></i>
+                                <span class="side-menu__label">Berita</span>
+                            </a>
+                        </li>
+
+                        <li class="slide__category"><span class="category-name">Unduhan</span></li>
+
+                        <li class="slide has-sub {{call .h.isOpen "/admin/dokumen"}}">
+                            <a href="javascript:void(0);" class="side-menu__item {{ call .h.isActive "/admin/dokumen"}}">
+                                <i class="bx bx-file side-menu__icon"></i>
+                                <span class="side-menu__label">Dokumen</span>
+                                <i class="bx bx-chevrons-right side-menu__angle"></i>
+                            </a>
+                            <ul class="slide-menu child1">
+                                <li class="slide side-menu__label1">
+                                    <a href="javascript:void(0)">Dokumen</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="/admin/dokumen/renja" class="side-menu__item {{call .h.isActive "/admin/dokumen/renja"}}">Renja</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="/admin/dokumen/renstra" class="side-menu__item {{call .h.isActive "/admin/dokumen/renstra"}}">Renstra</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="/admin/dokumen/lkjip" class="side-menu__item {{call .h.isActive "/admin/dokumen/lkjip"}}">LKjIP</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="/admin/dokumen/iku" class="side-menu__item {{call .h.isActive "/admin/dokumen/iku"}}">IKU</a>
+                                </li>
+                                <li class="slide">
+                                    <a href="/admin/dokumen/perjanjian-kinerja" class="side-menu__item {{call .h.isActive "/admin/dokumen/perjanjian-kinerja"}}">Perjanjian Kinerja</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="slide">
+                            <a href="{{call .h.route "dasar-hukum"}}" class="side-menu__item {{ call .h.isActive "/admin/dasar-hukum" }}">
+                                <i class="bx bx-arch side-menu__icon"></i>
+                                <span class="side-menu__label">Peraturan</span>
+                            </a>
+                        </li>
+
+                        <li class="slide__category"><span class="category-name">Master</span></li>
+                        <li class="slide">
+                            <a href="{{call .h.route "kategori"}}" class="side-menu__item {{ call .h.isActive "/admin/kategori" }}">
+                                <i class="bx bx-list-ul side-menu__icon"></i>
+                                <span class="side-menu__label">Kategori Berita</span>
+                            </a>
+                        </li>
+                        <li class="slide">
+                            <a href="{{call .h.route "tags"}}" class="side-menu__item {{ call .h.isActive "/admin/tags" }}">
+                                <i class="bx bxs-tag side-menu__icon"></i>
+                                <span class="side-menu__label">Tag Berita</span>
+                            </a>
+                        </li>
+                        <li class="slide">
+                            <a href="{{call .h.route "user"}}" class="side-menu__item {{ call .h.isActive "/admin/user" }}">
+                                <i class="bx bxs-user-account side-menu__icon"></i>
+                                <span class="side-menu__label">Manajemen User</span>
+                            </a>
+                        </li>
+
+                        <li class="slide">
+                            <a target="_blank" href="http://templateku.test/nixlot/html" class="side-menu__item">
                                 <i class="bx bxs-palette side-menu__icon"></i>
                                 <span class="side-menu__label">Template</span>
                             </a>
                         </li>
-                        <!-- End::slide -->
-
-                        <!-- Start::slide -->
                         <li class="slide">
-                            <a href="/logout" class="side-menu__item">
+                            <a href="{{call .h.route "auth.logout"}}" class="side-menu__item">
                                 <i class="bx bx-log-out text-danger side-menu__icon"></i>
                                 <span class="side-menu__label">Log Out</span>
                             </a>
                         </li>
-                        <!-- End::slide -->
                     </ul>
                     <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24"> <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path> </svg></div>
                 </nav>

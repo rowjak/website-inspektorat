@@ -1,0 +1,237 @@
+{{define "post/create.tmpl"}}
+    {{ template "layout/header.tmpl" . }}
+    {{ $route := call .h.route "post-create" }} 
+    <!-- Page Header -->
+    <div class="card custom-card mt-2">
+        <div class="card-body">
+            <div class="d-md-flex d-block align-items-center justify-content-between page-header-breadcrumb">
+                <h1 class="page-title fw-semibold fs-16 mb-0 font-magnolia">
+                    <i class="bx bxs-plus-square"></i> Tambah Berita
+                </h1>
+                <div class="ms-md-1 ms-0">
+                    <nav>
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="/berita">Berita</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Tambah</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header Close -->
+
+    <!-- Start::row-1 -->
+    <div class="row">
+        <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            <div class="card custom-card">
+                <div class="card-header">
+                    <div class="card-title w-100 font-magnolia">
+                        Form Input Berita
+                        <a href="javascript:history.back()" class="btn btn-sm btn-warning text-white float-end"><i class="bx bx-arrow-back"></i> Kembali</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form enctype="multipart/form-data" id="formSimpan">
+                        <input type="hidden" name="_token" value="{{.csrf_token}}">
+                        <div class="row gy-3">
+                            <div class="col-xl-12">
+                                <label for="judul" class="form-label">Judul</label>
+                                <input type="text" class="form-control" id="judul" name="judul" placeholder="Judul Berita" required>
+                            </div>
+                            <div class="col-xl-6">
+                                <label for="kategori_id" class="form-label">Kategori</label>
+                                <select class="form-control select2-tambah" name="kategori_id" id="kategori_id">
+                                    <option value="" selected disabled>Pilih</option>
+                                    {{range $index, $item := .Kategori}}
+                                        <option value="{{$item.ID}}">{{$item.Kategori}}</option>
+                                    {{end}}
+                                </select>
+                            </div>
+                            <div class="col-xl-6">
+                                <label for="tags" class="form-label">Tags</label>
+                                <select class="form-control select2-tambah" name="tags" id="tags" multiple>
+                                    {{range $index, $item := .Tags}}
+                                        <option value="{{$item.Slug}}">{{$item.Nama}}</option>
+                                    {{end}}
+                                </select>
+                            </div>
+                            <div class="col-xl-6">
+                                <label for="tanggal" class="form-label">Tanggal</label>
+                                <input type="text" class="form-control datepick" id="tanggal" name="tanggal" placeholder="Pilih Tanggal" required>
+                            </div>
+                            <div class="col-xl-6">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-control select2-tambah" name="status" id="status">
+                                    <option value="" selected disabled>Pilih</option>
+                                    <option value="Ditampilkan">Ditampilkan</option>
+                                    <option value="Disembunyikan">Disembunyikan</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-12">
+                                <label class="form-label">Isi Berita</label>
+                                <textarea id="isi"></textarea>
+                            </div>
+                            <div class="col-xl-12">
+                                <label for="thumbnail" class="form-label">Thumbnail</label>
+                                <input type="file" class="form-control" id="thumbnail" name="thumbnail" required accept="image/*">
+                            </div>
+                            <div class="col-xl-12">
+                                <label for="gambar" class="form-label">Gambar Isi</label>
+                                <input type="file" class="form-control" id="gambar" name="gambar" multiple>
+                            </div>
+                            <div class="col-xl-12">
+                                <label for="attachment" class="form-label">Attachment</label>
+                                <input type="file" class="form-control" id="attachment" name="attachment" required accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.rar,.zip">
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="btn-list text-end">
+                                    <button class="btn btn-primary" id="btnSimpan"><i class="bx bx-save"></i>Simpan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-xxl-3 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            
+            <div class="col-xl-12">
+                <div class="card custom-card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            Recent Posts
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="d-flex flex-wrap align-items-center">
+                                    <span class="avatar avatar-xl me-3">
+                                        <img src="../assets/images/media/media-1.jpg" class="img-fluid" alt="...">
+                                    </span>
+                                    <div class="flex-fill">
+                                        <a href="javascript:void(0);" class="fs-14 fw-semibold mb-0">Animals</a>
+                                        <p class="mb-1 popular-blog-content text-wrap">
+                                            There are passages of available
+                                        </p>
+                                        <span class="text-muted fs-11">24,Nov 2022 - 18:27</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="d-flex flex-wrap align-items-center">
+                                    <span class="avatar avatar-xl me-3">
+                                        <img src="../assets/images/media/media-2.jpg" class="img-fluid" alt="...">
+                                    </span>
+                                    <div class="flex-fill">
+                                        <a href="javascript:void(0);" class="fs-14 fw-semibold mb-0">Travel</a>
+                                        <p class="mb-1 popular-blog-content text-wrap">
+                                            Latin words with model sentence
+                                        </p>
+                                        <span class="text-muted fs-11">28,Nov 2022 - 10:45</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="d-flex flex-wrap align-items-center">
+                                    <span class="avatar avatar-xl me-3">
+                                        <img src="../assets/images/media/media-3.jpg" class="img-fluid" alt="...">
+                                    </span>
+                                    <div class="flex-fill">
+                                        <a href="javascript:void(0);" class="fs-14 fw-semibold mb-0">Interior</a>
+                                        <p class="mb-1 popular-blog-content text-wrap">
+                                            Contrary is not simply random
+                                        </p>
+                                        <span class="text-muted fs-11">30,Nov 2022 - 08:32</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="d-flex flex-wrap align-items-center">
+                                    <span class="avatar avatar-xl me-3">
+                                        <img src="../assets/images/media/media-4.jpg" class="img-fluid" alt="...">
+                                    </span>
+                                    <div class="flex-fill">
+                                        <a href="javascript:void(0);" class="fs-14 fw-semibold mb-0">Nature</a>
+                                        <p class="mb-1 popular-blog-content text-wrap">
+                                            It was  in the 1960s of Letraset</p>
+                                        <span class="text-muted fs-11">3,Dec 2022 - 12:56</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item text-center d-grid">
+                                <button class="btn btn-primary-light">Load more</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End::row-1 -->
+    {{ template "layout/footer.tmpl" . }}
+
+    <script>
+        var table;
+
+        const easymde = new EasyMDE({
+            element: document.getElementById('isi'),
+            toolbar: ["bold", "italic", "heading", "|", "quote", "unordered-list", "ordered-list", "|", "link", "preview", "|", "guide"]
+        });
+
+        $(function(){
+
+
+        });
+
+        $('#btnSimpan').click(function(e){
+            e.preventDefault();
+            loadingSimpan(true);
+
+            var data = new FormData(document.getElementById("formSimpan"));
+            data.append('isi', easymde.value());
+            axios.post('/admin/berita',data)
+            .then(function (response) {
+                var data = response.data;
+                loadingSimpan(false);
+
+                if (data.status) {
+                    notify('success','Berhasil!',data.message);
+                    easymde.value("");
+                    $('#formSimpan').trigger('reset');
+                    $('#kategori_id').val(null).trigger('change');
+                    $('#tags').val(null).trigger('change');
+                    $('#status').val(null).trigger('change');
+                    $('input').blur();
+
+                    setTimeout(function() {
+                        window.location.replace("/admin/berita");
+                    }, 500);
+
+                }else{
+                    Swal.fire(
+                        {
+                            title: "Peringatan",
+                            html: data.message,
+                            icon: 'warning',
+                            confirmButtonColor: '#5156be'
+                        }
+                    )
+                }
+            })
+            .catch(function (error) {
+                loadingSimpan(false);
+                notify('danger','Gagal!',error);
+            });
+
+        });
+
+   </script>
+    
+</body>
+
+</html>
+{{end}}

@@ -5,15 +5,19 @@ go 1.23.0
 toolchain go1.24.0
 
 require (
+	github.com/Kagami/go-avif v0.1.0
 	github.com/gin-gonic/gin v1.10.1
 	github.com/google/uuid v1.6.0
 	github.com/goravel/framework v1.16.0
 	github.com/goravel/gin v1.4.0
 	github.com/goravel/mysql v1.4.0
 	github.com/goravel/postgres v1.4.0
+	github.com/goravel/redis v1.4.0
 	github.com/gosimple/slug v1.15.0
+	github.com/kolesa-team/go-webp v1.0.5
 	github.com/stretchr/testify v1.10.0
 	golang.org/x/crypto v0.40.0
+	golang.org/x/image v0.29.0
 	google.golang.org/grpc v1.73.0
 )
 
@@ -118,7 +122,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/pterm/pterm v0.12.81 // indirect
 	github.com/rabbitmq/amqp091-go v1.10.0 // indirect
-	github.com/redis/go-redis/v9 v9.9.0 // indirect
+	github.com/redis/go-redis/v9 v9.11.0 // indirect
 	github.com/rifflock/lfshook v0.0.0-20180920164130-b9218ef580f5 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect

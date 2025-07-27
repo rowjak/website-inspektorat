@@ -1,18 +1,19 @@
-{{define "user/index.tmpl"}}
+{{define "kategori/index.tmpl"}}
+    {{ $route := call .h.route "kategori" }} 
+
     {{ template "layout/header.tmpl" . }}
-    {{ $route := call .h.route "user" }} 
     <!-- Page Header -->
     <div class="card custom-card mt-2">
         <div class="card-body">
             <div class="d-md-flex d-block align-items-center justify-content-between page-header-breadcrumb">
                 <h1 class="page-title fw-semibold fs-16 mb-0 font-magnolia">
-                    <i class="bx bxs-user-account"></i> Manajemen User
+                    <i class="bx bxs-user-account"></i> Daftar Kategori Berita
                 </h1>
                 <div class="ms-md-1 ms-0">
                     <nav>
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">User</li>
+                            <li class="breadcrumb-item active" aria-current="page">Kategori</li>
                         </ol>
                     </nav>
                 </div>
@@ -31,40 +32,12 @@
                 <div class="modal-body text-start">
                     <form id="formUpdate" method="post">
                         <input type="hidden" name="_token" value="{{.csrf_token}}">
-                        <input type="hidden" name="id" id="id_user">
+                        <input type="hidden" name="id" id="id_kategori">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group mt-2">
-                                    <label for="name" class="form-label">Nama</label>
-                                    <input class="form-control" type="text" id="nama_lengkap" name="nama_lengkap">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group mt-2">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input class="form-control" type="email" id="email" name="email">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group mt-2">
-                                    <label for="nama_opd" class="form-label">Role</label>
-                                    <select class="form-control select2-ubah" name="role" id="role">
-                                        <option value="admin">Admin</option>
-                                        <option value="staf">Staf</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mt-2">
-                                    <label for="password" class="form-label">Password Baru</label>
-                                    <input class="form-control" type="password" id="password" name="password" placeholder="Password Baru">
-                                    <small class="text-danger">Jika tidak ingin mengganti password, kosongkan kolom ini.</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mt-2">
-                                    <label for="password" class="form-label">Konfirmasi Password Baru</label>
-                                    <input class="form-control" type="password" name="password_confirmation" placeholder="Konfirmasi Password Baru">
+                                    <label for="name" class="form-label">Kategori Berita</label>
+                                    <input class="form-control" type="text" id="kategori" name="kategori">
                                 </div>
                             </div>
                         </div>
@@ -83,48 +56,20 @@
             <div class="card custom-card">
                 <div class="card-header">
                     <div class="card-title font-magnolia">
-                        <i class='bx bxs-plus-square'></i> Form Tambah Data User
+                        <i class='bx bxs-plus-square'></i> Form Tambah Data Kategori Berita
                     </div>
                 </div>
                 <div class="card-body pt-0">
                     <form id="formSimpan" method="post" autocomplete="off">
                         <input type="hidden" name="_token" value="{{.csrf_token}}">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group mt-2">
-                                    <label for="name" class="form-label">Nama</label>
-                                    <input class="form-control" type="text" name="nama_lengkap" placeholder="Nama Lengkap">
+                                    <label for="name" class="form-label">Kategori Berita</label>
+                                    <input class="form-control" type="text" name="kategori" placeholder="Kategori Berita">
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="form-group mt-2">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input class="form-control" type="email" name="email" placeholder="Email" autocomplete="off">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group mt-2">
-                                    <label for="role" class="form-label">Role</label>
-                                    <select class="form-control select2" name="role" id="frole">
-                                        <option value="" selected disabled>Pilih Role</option>
-                                        <option value="admin">Admin</option>
-                                        <option value="staf">Staf</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group mt-2">
-                                    <label for="password" class="form-label">Password</label>
-                                    <input class="form-control" type="password" name="password" placeholder="Password">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group mt-2">
-                                    <label for="password" class="form-label">Konfirmasi Password</label>
-                                    <input class="form-control" type="password" name="password_confirmation" placeholder="Password">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group mt-2">
                                     <label class="form-label text-white d-none d-md-block">..</label>
                                     <div class="d-grid gap-2">
@@ -141,7 +86,7 @@
             <div class="card custom-card">
                 <div class="card-header">
                     <div class="card-title font-magnolia">
-                        <i class="bx bxs-user-account"></i> Data Manajemen User
+                        <i class="bx bxs-user-account"></i> Data Kategori Berita
                     </div>
                 </div>
                 <div class="card-body">
@@ -149,10 +94,9 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Nama</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Aksi</th>
+                                <th>Kategori</th>
+                                <th>Slug</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -186,16 +130,12 @@
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false },
                     {
-                        data: 'nama_lengkap',
-                        name: 'nama_lengkap'
+                        data: 'kategori',
+                        name: 'kategori'
                     },
                     {
-                        data: 'email',
-                        name: 'email'
-                    },
-                    {
-                        data: 'role',
-                        name: 'role'
+                        data: 'slug',
+                        name: 'slug'
                     },
                     {
                         data: 'action',
@@ -219,7 +159,6 @@
                 if (data.status) {
                     notify('success','Berhasil!',data.message);
                     $('#formSimpan').trigger('reset');
-                    $('#frole').val(null).change();
                     $('input').blur();
                     table.draw();
                 }else{
@@ -245,7 +184,7 @@
             loadingUpdate(true);
 
             var data = new FormData(document.getElementById("formUpdate"));
-            axios.put('{{$route}}/'+$('#id_user').val(),data)
+            axios.put('{{$route}}/'+$('#id_kategori').val(),data)
             .then(function (response) {
                 var data = response.data;
                 loadingUpdate(false);
@@ -322,10 +261,8 @@
                 var res = data.data;
                 console.log(res);
                 $('#modalUbah').modal('toggle');
-                $('#id_user').val(res.id);
-                $('#role').val(res.Role).change();
-                $('#email').val(res.Email);
-                $('#nama_lengkap').val(res.NamaLengkap);
+                $('#id_kategori').val(res.id);
+                $('#kategori').val(res.Kategori);
             })
             .catch(function (error) {
                 notify('danger','Gagal!',error);

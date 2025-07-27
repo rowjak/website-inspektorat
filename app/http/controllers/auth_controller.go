@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"rowjak/website-inspektorat/app/helpers"
 	"rowjak/website-inspektorat/app/models"
@@ -87,12 +88,12 @@ func (r *AuthController) Login(ctx http.Context) http.Response {
 
 	// log.Println("USER DATA:", user)
 
-	ctx.Request().Session().Put("user_id", user.ID)
+	ctx.Request().Session().Put("user_id", fmt.Sprintf("%d", user.ID))
 	ctx.Request().Session().Put("user_name", user.NamaLengkap)
 	ctx.Request().Session().Put("user_email", user.Email)
 	ctx.Request().Session().Put("user_role", user.Role)
 
-	return ctx.Response().Redirect(http.StatusFound, "/dashboard")
+	return ctx.Response().Redirect(http.StatusFound, "/admin/dashboard")
 }
 
 func (r *AuthController) Logout(ctx http.Context) http.Response {

@@ -375,7 +375,7 @@ func (u *FileEncryptController) Destroy(ctx http.Context) http.Response {
 	// Hapus file gambar terkait
 	for _, image := range post.PostImage {
 		// Path relatif terhadap direktori 'storage' dari disk 'local'
-		storagePath := fmt.Sprintf("posts/images/%s", image.ImageName)
+		storagePath := fmt.Sprintf("posts/images/%s", image.ImageLg)
 
 		// Hapus file fisik
 		if err := facades.Storage().Disk("local").Delete(storagePath); err != nil {
@@ -390,19 +390,19 @@ func (u *FileEncryptController) Destroy(ctx http.Context) http.Response {
 		})
 	}
 
-	storagePath := fmt.Sprintf("posts/thumbnails/%s", post.ThumbnailName)
+	// storagePath := fmt.Sprintf("posts/thumbnails/%s", post.ThumbnailName)
 
-	// Hapus file fisik
-	if err := facades.Storage().Disk("local").Delete(storagePath); err != nil {
-		facades.Log().Error(fmt.Sprintf("Gagal menghapus file: %s, error: %v", storagePath, err))
-	}
+	// // Hapus file fisik
+	// if err := facades.Storage().Disk("local").Delete(storagePath); err != nil {
+	// 	facades.Log().Error(fmt.Sprintf("Gagal menghapus file: %s, error: %v", storagePath, err))
+	// }
 
-	if _, err := facades.Orm().Query().Delete(&post); err != nil {
-		return ctx.Response().Json(http.StatusInternalServerError, http.Json{
-			"status":  false,
-			"message": "Terjadi kesalahan saat menghapus data",
-		})
-	}
+	// if _, err := facades.Orm().Query().Delete(&post); err != nil {
+	// 	return ctx.Response().Json(http.StatusInternalServerError, http.Json{
+	// 		"status":  false,
+	// 		"message": "Terjadi kesalahan saat menghapus data",
+	// 	})
+	// }
 
 	return ctx.Response().Json(http.StatusOK, map[string]any{
 		"status":  true,

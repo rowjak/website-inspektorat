@@ -1,4 +1,6 @@
 {{define "layout/footer.tmpl"}}
+
+    {{ $assets := call .h.route "assets" }}
             
             </div>
         </div>
@@ -29,29 +31,29 @@
     <!-- Scroll To Top -->
 
     <!-- Popper JS -->
-    <script src="assets/shaka/libs/@popperjs/core/umd/popper.min.js"></script>
+    <script src="{{call .h.route "assets"}}/shaka/libs/@popperjs/core/umd/popper.min.js"></script>
 
     <!-- Bootstrap JS -->
-    <script src="assets/shaka/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{call .h.route "assets"}}/shaka/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <!-- Defaultmenu JS -->
-    <script src="assets/shaka/js/defaultmenu.min.js"></script>
+    <script src="{{call .h.route "assets"}}/shaka/js/defaultmenu.min.js"></script>
 
     <!-- Node Waves JS-->
-    <script src="assets/shaka/libs/node-waves/waves.min.js"></script>
+    <script src="{{call .h.route "assets"}}/shaka/libs/node-waves/waves.min.js"></script>
 
     <!-- Sticky JS -->
-    <script src="assets/shaka/js/sticky.js"></script>
+    <script src="{{call .h.route "assets"}}/shaka/js/sticky.js"></script>
 
     <!-- Simplebar JS -->
-    <script src="assets/shaka/libs/simplebar/simplebar.min.js"></script>
-    <script src="assets/shaka/js/simplebar.js"></script>
+    <script src="{{call .h.route "assets"}}/shaka/libs/simplebar/simplebar.min.js"></script>
+    <script src="{{call .h.route "assets"}}/shaka/js/simplebar.js"></script>
 
     <!-- Color Picker JS -->
-    <script src="assets/shaka/libs/@simonwep/pickr/pickr.es5.min.js"></script>
+    <script src="{{call .h.route "assets"}}/shaka/libs/@simonwep/pickr/pickr.es5.min.js"></script>
 
     <!-- Datatables Cdn -->
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -63,18 +65,23 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <!-- Apex Charts JS -->
-    <script src="assets/shaka/libs/apexcharts/apexcharts.min.js"></script>
+    <script src="{{call .h.route "assets"}}/shaka/libs/apexcharts/apexcharts.min.js"></script>
 
-    <script src="assets/shaka/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script src="{{call .h.route "assets"}}/shaka/libs/sweetalert2/sweetalert2.min.js"></script>
 
-    <script src="assets/shaka/libs/flatpickr/flatpickr.min.js"></script>
-    <script src="assets/shaka/libs/flatpickr/id.js"></script>
+    <script src="{{call .h.route "assets"}}/shaka/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="{{call .h.route "assets"}}/shaka/libs/flatpickr/id.js"></script>
 
     <!-- Custom-Switcher JS -->
-    <script src="assets/shaka/js/custom-switcher.min.js"></script>
+    <script src="{{call .h.route "assets"}}/shaka/js/custom-switcher.min.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
 
     <!-- Custom JS -->
-    <script src="assets/shaka/js/custom.js"></script>
+    <script src="{{call .h.route "assets"}}/shaka/js/custom.js"></script>
+
+
 
     <script>
 

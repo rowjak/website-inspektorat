@@ -1,17 +1,18 @@
 {{define "post/index.tmpl"}}
     {{ template "layout/header.tmpl" . }}
+    {{ $route := call .h.route "berita" }} 
     <!-- Page Header -->
     <div class="card custom-card mt-2">
         <div class="card-body">
             <div class="d-md-flex d-block align-items-center justify-content-between page-header-breadcrumb">
                 <h1 class="page-title fw-semibold fs-16 mb-0 font-magnolia">
-                    <i class="bx bxs-user-account"></i> Manajemen User
+                    <i class="bx bx-news"></i> Data Berita Inspektorat Daerah Kabupaten Pekalongan
                 </h1>
                 <div class="ms-md-1 ms-0">
                     <nav>
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">User</li>
+                            <li class="breadcrumb-item active" aria-current="page">Berita</li>
                         </ol>
                     </nav>
                 </div>
@@ -20,117 +21,14 @@
     </div>
     <!-- Page Header Close -->
 
-    <div class="modal fade" id="modalUbah">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content modal-content-demo">
-                <div class="modal-header">
-                    <h6 class="modal-title font-magnolia"><i class='bx bxs-edit'></i> Ubah Data</h6>
-                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body text-start">
-                    <form id="formUpdate" method="post">
-                        <input type="hidden" name="_token" value="{{.csrf_token}}">
-                        <input type="hidden" name="id" id="id_user">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group mt-2">
-                                    <label for="name" class="form-label">Nama</label>
-                                    <input class="form-control" type="text" id="nama_lengkap" name="nama_lengkap">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group mt-2">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input class="form-control" type="email" id="email" name="email">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group mt-2">
-                                    <label for="nama_opd" class="form-label">Role</label>
-                                    <select class="form-control select2-ubah" name="role" id="role">
-                                        <option value="admin">Admin</option>
-                                        <option value="staf">Staf</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mt-2">
-                                    <label for="password" class="form-label">Password Baru</label>
-                                    <input class="form-control" type="password" id="password" name="password" placeholder="Password Baru">
-                                    <small class="text-danger">Jika tidak ingin mengganti password, kosongkan kolom ini.</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mt-2">
-                                    <label for="password" class="form-label">Konfirmasi Password Baru</label>
-                                    <input class="form-control" type="password" name="password_confirmation" placeholder="Konfirmasi Password Baru">
-                                </div>
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" id="btnUpdate" class="btn btn-primary"><i class='bx bx-recycle'></i> Perbarui</button>
-                </div>
-                    </form>
-            </div>
-        </div>
-    </div>
-
     <!-- Start::row-1 -->
     <div class="row">
         <div class="col-md-12">
             <div class="card custom-card">
                 <div class="card-header">
-                    <div class="card-title font-magnolia">
-                        <i class='bx bxs-plus-square'></i> Form Tambah Data User
-                    </div>
-                </div>
-                <div class="card-body pt-0">
-                    <form id="formSimpan" method="post" autocomplete="off" enctype="multipart/form-data">
-                        <input type="hidden" name="_token" value="{{.csrf_token}}">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group mt-2">
-                                    <label for="name" class="form-label">Judul</label>
-                                    <input class="form-control" type="text" name="judul" placeholder="Judul">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group mt-2">
-                                    <label for="name" class="form-label">Isi</label>
-                                    <input class="form-control" type="text" name="isi" placeholder="Isi">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group mt-2">
-                                    <label for="email" class="form-label">Thumbnail</label>
-                                    <input class="form-control" type="file" name="thumbnail" accept="image/*" placeholder="Thumbnail">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group mt-2">
-                                    <label for="email" class="form-label">Gambar</label>
-                                    <input class="form-control" type="file" name="gambar[]" multiple placeholder="Thumbnail" accept="image/*">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group mt-2">
-                                    <label class="form-label text-white d-none d-md-block">..</label>
-                                    <div class="d-grid gap-2">
-                                        <button id="btnSimpan" type="submit" class="btn btn-success waves-effect waves-light"><i class='bx bx-save'></i> Simpan</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="card custom-card">
-                <div class="card-header">
-                    <div class="card-title font-magnolia">
-                        <i class="bx bxs-user-account"></i> Data Manajemen User
+                    <div class="card-title font-magnolia w-100">
+                        <i class="bx bx-news"></i> Data Berita
+                        <a href="{{ call .h.route "post-create" }}" class="btn btn-sm btn-success float-end pull-right"><i class="bx bx-plus"></i> Tambah Berita</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -139,8 +37,11 @@
                             <tr>
                                 <th>#</th>
                                 <th>Judul</th>
-                                <th>Slug</th>
-                                <th>Jumlah Gambar</th>
+                                <th>Kategori/Tags</th>
+                                <th>Status</th>
+                                <th>Link</th>
+                                <th>Tanggal</th>
+                                <th>Thumbnail</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -170,7 +71,7 @@
                 order: [],
                 serverSide: true,
                 ajax: {
-                    url: '/post'
+                    url: '{{$route}}'
                 },
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false },
@@ -179,85 +80,30 @@
                         name: 'judul'
                     },
                     {
+                        data: 'kategori_tag',
+                        name: 'kategori_tag'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
                         data: 'slug',
                         name: 'slug'
                     },
                     {
-                        data: 'jumlah_gambar',
-                        name: 'jumlah_gambar'
+                        data: 'tanggal',
+                        name: 'tanggal'
+                    },
+                    {
+                        data: 'thumbnail',
+                        name: 'thumbnail'
                     },
                     {
                         data: 'action',
                         name: 'action'
                     }
                 ]
-            });
-
-        });
-
-        $('#btnSimpan').click(function(e){
-            e.preventDefault();
-            loadingSimpan(true);
-
-            var data = new FormData(document.getElementById("formSimpan"));
-            axios.post('/post',data)
-            .then(function (response) {
-                var data = response.data;
-                loadingSimpan(false);
-
-                if (data.status) {
-                    notify('success','Berhasil!',data.message);
-                    $('#formSimpan').trigger('reset');
-                    $('input').blur();
-                    table.draw();
-                }else{
-                    Swal.fire(
-                        {
-                            title: "Peringatan",
-                            html: data.message,
-                            icon: 'warning',
-                            confirmButtonColor: '#5156be'
-                        }
-                    )
-                }
-            })
-            .catch(function (error) {
-                loadingSimpan(false);
-                notify('danger','Gagal!',error);
-            });
-
-        });
-
-        $('#btnUpdate').click(function(e){
-            e.preventDefault();
-            loadingUpdate(true);
-
-            var data = new FormData(document.getElementById("formUpdate"));
-            axios.put('post/'+$('#id_post').val(),data)
-            .then(function (response) {
-                var data = response.data;
-                loadingUpdate(false);
-
-                if (data.status) {
-                    notify('info','Berhasil!', data.message);
-                    $('#modalUbah').modal('toggle');
-                    $('#formUpdate').trigger('reset');
-                    $('input').blur();
-                    table.draw();
-                }else{
-                    Swal.fire(
-                        {
-                            title: "Peringatan",
-                            html: data.message,
-                            icon: 'warning',
-                            confirmButtonColor: '#5156be'
-                        }
-                    )
-                }
-            })
-            .catch(function (error) {
-                loadingUpdate(false);
-                notify('danger','Gagal!',error);
             });
 
         });
@@ -274,7 +120,7 @@
             }).then(function (result) {
                 if (result.value) {
                     // masukkan proses delete disini
-                    axios.delete(`/post/${id}`,{
+                    axios.delete(`{{$route}}/${id}`,{
                         headers: {
                             'X-CSRF-TOKEN': '{{.csrf_token}}'
                         }
@@ -301,24 +147,6 @@
                     });
                 }
             });
-        }
-
-        function ubah(post){
-            axios.get(`/post/${id}`)
-            .then(function (response) {
-                var data = response.data;
-                var res = data.data;
-                console.log(res);
-                $('#modalUbah').modal('toggle');
-                $('#id_user').val(res.id);
-                $('#role').val(res.Role).change();
-                $('#email').val(res.Email);
-                $('#nama_lengkap').val(res.NamaLengkap);
-            })
-            .catch(function (error) {
-                notify('danger','Gagal!',error);
-            });
-
         }
 
 
